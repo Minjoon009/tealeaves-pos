@@ -125,13 +125,15 @@ h4 {
     top: 0;
     height: 100vh;
     overflow-y: auto;
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none;
+    /* Firefox */
     transition: transform 0.25s ease, width 0.25s ease;
     z-index: 50;
 }
 
 .sidebar::-webkit-scrollbar {
-  display: none; /* Chrome, Edge, Safari */
+    display: none;
+    /* Chrome, Edge, Safari */
 }
 
 .sidebarBrand {
@@ -182,7 +184,12 @@ h4 {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    overflow: hidden
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.sidebarNav::-webkit-scrollbar {
+    display: none;
 }
 
 .navSectionLabel {
