@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>History - Tea Leaves</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style/navStyle.css" />
+    <link rel="stylesheet" href="./style/historyStyle.css" />
+  </head>
+
+  <body>
+    <div class="screenLayout">
+      <!-- NAV BAR -->
+      <div class="navContianer">
+        <div class="logoAndArrow">
+          <h1 id="logo">Tea Leaves</h1>
+        </div>
+
+        <nav>
+          <ul>
+            <li><a href="./home.html">🛒 &nbsp;View</a></li>
+            <li><a href="./requestProduct.html">📦 &nbsp;Request</a></li>
+            <li><a href="./receipt.html">📃 &nbsp;Receipt</a></li>
+            <li class="active">
+              <a href="./history.html">📜 &nbsp;History</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="logoutWrap">
+          <button class="logoutBtn" type="button" id="logoutBtn">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- MAIN CONTENT -->
+      <main class="historyPage">
+        <div class="pageHeader">
+          <div>
+            <h2>Sales History</h2>
+            <p class="pageSubtitle">All orders you've completed.</p>
+          </div>
+          <span class="orderCount" id="orderCount">0 orders</span>
+        </div>
+
+        <div class="filterBar">
+          <div class="filterSearch">
+            <span class="searchIcon">&#128269;</span>
+            <input
+              type="search"
+              id="historySearch"
+              placeholder="Search by order no, product..."
+              autocomplete="off"
+            />
+            <button
+              type="button"
+              class="clearSearchBtn"
+              id="clearSearchBtn"
+              hidden
+            >
+              Clear
+            </button>
+          </div>
+
+          <select class="filterSelect" id="filterDate">
+            <option value="all" selected>All Dates</option>
+            <option value="today">Today</option>
+            <option value="yesterday">Yesterday</option>
+            <option value="thisWeek">This Week</option>
+            <option value="thisMonth">This Month</option>
+            <option value="custom">Custom Date...</option>
+          </select>
+
+          <select class="filterSelect" id="filterPayment">
+            <option value="all" selected>All Payments</option>
+            <option value="Cash">Cash</option>
+            <option value="Card">Card</option>
+            <option value="Mobile Payment">Mobile Payment</option>
+          </select>
+
+          <select class="filterSelect" id="filterStatus">
+            <option value="all" selected>All Statuses</option>
+            <option value="Paid">Paid</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Refunded">Refunded</option>
+          </select>
+
+          <button class="btnReset" type="button" id="resetFiltersBtn">
+            Reset
+          </button>
+        </div>
+
+        <div class="customDateRow" id="customDateRow" hidden>
+          <label class="dateField">
+            <span>From</span>
+            <input type="date" id="dateFrom" />
+          </label>
+          <label class="dateField">
+            <span>To</span>
+            <input type="date" id="dateTo" />
+          </label>
+        </div>
+
+        <div class="summaryRow" id="summaryRow"></div>
+
+        <div class="tableCard">
+          <div class="tableWrap">
+            <table class="historyTable">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Date</th>
+                  <th>Items</th>
+                  <th>Payment</th>
+                  <th class="right">Total</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="historyBody"></tbody>
+            </table>
+          </div>
+
+          <div class="paginationBar" id="paginationBar">
+            <div class="paginationInfo" id="paginationInfo">Showing 0 of 0</div>
+            <div class="paginationControls">
+              <label class="pageSizeLabel">
+                Show
+                <select id="pageSizeSelect" class="pageSizeSelect">
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <button class="pageBtn" id="prevPageBtn" type="button">
+                &lt; Prev
+              </button>
+              <div class="pageNumbers" id="pageNumbers"></div>
+              <button class="pageBtn" id="nextPageBtn" type="button">
+                Next &gt;
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ORDER DETAIL MODAL -->
+    <div class="modalOverlay" id="detailModal" aria-hidden="true">
+      <div class="modalDialog" role="dialog" aria-modal="true">
+        <div class="modalHead">
+          <div>
+            <h3>Order Details</h3>
+            <span class="modalSubId" id="modalOrderId">-</span>
+          </div>
+          <button
+            class="modalCloseBtn"
+            id="modalCloseBtn"
+            type="button"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+        </div>
+
+        <div class="modalBody">
+          <div class="detailGrid">
+            <div class="detailItem">
+              <span class="detailLabel">Cashier</span>
+              <span class="detailValue" id="modalCashier">-</span>
+            </div>
+            <div class="detailItem">
+              <span class="detailLabel">Date &amp; Time</span>
+              <span class="detailValue" id="modalDateTime">-</span>
+            </div>
+            <div class="detailItem">
+              <span class="detailLabel">Payment Method</span>
+              <span class="detailValue" id="modalPayment">-</span>
+            </div>
+            <div class="detailItem">
+              <span class="detailLabel">Status</span>
+              <span class="detailValue" id="modalStatus">-</span>
+            </div>
+          </div>
+
+          <div class="modalSection">
+            <div class="modalSectionTitle">Items Purchased</div>
+            <div class="itemsTableWrap">
+              <table class="itemsTable">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th class="right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody id="modalItems"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="modalSection">
+            <div class="totalsBlock">
+              <div class="totalsRow">
+                <span>Subtotal</span><span id="modalSubtotal">-</span>
+              </div>
+              <div class="totalsRow">
+                <span>Discount</span><span id="modalDiscount">-</span>
+              </div>
+              <div class="totalsRow">
+                <span>Tax</span><span id="modalTax">-</span>
+              </div>
+              <div class="totalsRow totalsRowGrand">
+                <span>NET AMOUNT</span><span id="modalNet">-</span>
+              </div>
+              <div class="totalsRow">
+                <span>Received</span><span id="modalReceived">-</span>
+              </div>
+              <div class="totalsRow totalsRowChange">
+                <span>CHANGE</span><span id="modalChange">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modalActions">
+          <button class="btnSecondary" id="cancelDetailBtn" type="button">
+            Close
+          </button>
+          <button class="btnPrimary" id="reprintBtn" type="button">
+            Reprint Receipt
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast" hidden>
+      <span class="toastIcon" id="toastIcon">&#10003;</span>
+      <span class="toastText" id="toastText">Done</span>
+    </div>
+    <script src="../Authentication/auth.js"></script>
+    <script>
+      /* ============================================================
+         CASHIER - HISTORY
+         ASCII-safe JS. No smart quotes, em-dashes, bullets, emojis.
+         ============================================================ */
+
+      /* ---------- STORAGE ---------- */
+      var ORDER_KEY = "orderData";
+
+      function loadOrders() {
+        try {
+          var parsed = JSON.parse(localStorage.getItem(ORDER_KEY)) || [];
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      function loadCurrentUser() {
+        try {
+          return JSON.parse(localStorage.getItem("currentUser")) || {};
+        } catch (e) {
+          return {};
+        }
+      }
+
+      var currentUser = loadCurrentUser();
+      var allOrders = loadOrders();
+
+      /* ---------- HELPERS ---------- */
+      function esc(str) {
+        return String(str == null ? "" : str).replace(/[&<>"']/g, function (c) {
+          if (c === "&") return "&amp;";
+          if (c === "<") return "&lt;";
+          if (c === ">") return "&gt;";
+          if (c === '"') return "&quot;";
+          return "&#39;";
+        });
+      }
+
+      function money(v) {
+        return Number(v || 0).toLocaleString("en-US") + " Ks";
+      }
+
+      function numberFmt(v) {
+        return Number(v || 0).toLocaleString("en-US");
+      }
+
+      function formatDate(iso) {
+        var d = new Date(iso);
+        if (isNaN(d)) return "-";
+        return d.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+      }
+
+      function formatTime(iso) {
+        var d = new Date(iso);
+        if (isNaN(d)) return "-";
+        return d.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        });
+      }
+
+      function formatDateTime(iso) {
+        var d = new Date(iso);
+        if (isNaN(d)) return "-";
+        return formatDate(iso) + ", " + formatTime(iso);
+      }
+
+      function calcTotals(order) {
+        var products = order.products || [];
+        var subtotal = products.reduce(function (sum, p) {
+          return sum + (Number(p.qty) || 0) * (Number(p.price) || 0);
+        }, 0);
+        var totalQty = products.reduce(function (sum, p) {
+          return sum + (Number(p.qty) || 0);
+        }, 0);
+        var discount = Number(order.discount) || 0;
+        var taxRate = Number(order.taxRate) || 0;
+        var tax = Math.round((subtotal - discount) * taxRate);
+        var net = subtotal - discount + tax;
+        var received = Number(order.received) || 0;
+        var change = received - net;
+        return {
+          subtotal: subtotal,
+          totalQty: totalQty,
+          discount: discount,
+          tax: tax,
+          net: net,
+          received: received,
+          change: change,
+        };
+      }
+
+      function getStatus(order) {
+        if (order.status) return order.status;
+        if (order.products && order.products.length) return "Paid";
+        return "Paid";
+      }
+
+      function getPaymentMethod(order) {
+        return order.payment || "Cash";
+      }
+
+      function belongsToCurrentUser(order) {
+        var orderCashier = String(order.cashier || "").toLowerCase();
+        var username = String(currentUser.username || "").toLowerCase();
+        var email = String(currentUser.email || "").toLowerCase();
+
+        if (!orderCashier) return false;
+        if (username && orderCashier === username) return true;
+        if (email && orderCashier === email) return true;
+        if (username && orderCashier.indexOf(username) !== -1) return true;
+        return false;
+      }
+
+      function getCashierOrders() {
+        var hasUser =
+          currentUser && (currentUser.username || currentUser.email);
+        if (!hasUser) return allOrders;
+
+        var matched = allOrders.filter(belongsToCurrentUser);
+
+        // If the logged-in user has no matching orders (e.g. orderData uses
+        // "Cashier 01" but the account is "su su"), fall back to showing
+        // every order so the page isn't confusingly empty.
+        if (matched.length === 0) return allOrders;
+
+        return matched;
+      }
+
+      /* ---------- STATE ---------- */
+      var currentPage = 1;
+      var pageSize = 10;
+      var searchQuery = "";
+      var filterDate = "all";
+      var filterPayment = "all";
+      var filterStatus = "all";
+      var customFrom = "";
+      var customTo = "";
+      var activeOrderId = null;
+
+      /* ---------- DOM REFS ---------- */
+      var historyBody = document.getElementById("historyBody");
+      var orderCountEl = document.getElementById("orderCount");
+      var summaryRow = document.getElementById("summaryRow");
+
+      var searchInput = document.getElementById("historySearch");
+      var clearSearchBtn = document.getElementById("clearSearchBtn");
+      var filterDateEl = document.getElementById("filterDate");
+      var filterPaymentEl = document.getElementById("filterPayment");
+      var filterStatusEl = document.getElementById("filterStatus");
+      var resetFiltersBtn = document.getElementById("resetFiltersBtn");
+
+      var customDateRow = document.getElementById("customDateRow");
+      var dateFromInput = document.getElementById("dateFrom");
+      var dateToInput = document.getElementById("dateTo");
+
+      var paginationInfo = document.getElementById("paginationInfo");
+      var pageSizeSelect = document.getElementById("pageSizeSelect");
+      var prevPageBtn = document.getElementById("prevPageBtn");
+      var nextPageBtn = document.getElementById("nextPageBtn");
+      var pageNumbersEl = document.getElementById("pageNumbers");
+
+      var detailModal = document.getElementById("detailModal");
+      var modalOrderId = document.getElementById("modalOrderId");
+      var modalCashier = document.getElementById("modalCashier");
+      var modalDateTime = document.getElementById("modalDateTime");
+      var modalPayment = document.getElementById("modalPayment");
+      var modalStatus = document.getElementById("modalStatus");
+      var modalItems = document.getElementById("modalItems");
+      var modalSubtotal = document.getElementById("modalSubtotal");
+      var modalDiscount = document.getElementById("modalDiscount");
+      var modalTax = document.getElementById("modalTax");
+      var modalNet = document.getElementById("modalNet");
+      var modalReceived = document.getElementById("modalReceived");
+      var modalChange = document.getElementById("modalChange");
+
+      /* ---------- PILLS ---------- */
+      function statusPill(status) {
+        var cls = "paid";
+        if (status === "Cancelled") cls = "cancelled";
+        else if (status === "Refunded") cls = "refunded";
+        return (
+          '<span class="statusPill ' + cls + '">' + esc(status) + "</span>"
+        );
+      }
+
+      function paymentPill(method) {
+        var key = String(method || "Cash").toLowerCase();
+        var cls = "cash";
+        if (key === "card") cls = "card";
+        else if (key === "mobile payment") cls = "mobile";
+        return (
+          '<span class="paymentPill ' + cls + '">' + esc(method) + "</span>"
+        );
+      }
+
+      /* ---------- DATE RANGE ---------- */
+      function isInDateRange(order, preset) {
+        var t = new Date(order.date).getTime();
+        if (isNaN(t)) return false;
+
+        var now = new Date();
+        function startOfDay(d) {
+          return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+        }
+        function endOfDay(d) {
+          return (
+            new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1).getTime() -
+            1
+          );
+        }
+
+        if (preset === "all") return true;
+
+        if (preset === "today") {
+          return t >= startOfDay(now) && t <= endOfDay(now);
+        }
+        if (preset === "yesterday") {
+          var y = new Date(now);
+          y.setDate(y.getDate() - 1);
+          return t >= startOfDay(y) && t <= endOfDay(y);
+        }
+        if (preset === "thisWeek") {
+          var day = now.getDay();
+          var diff = day === 0 ? 6 : day - 1;
+          var start = new Date(now);
+          start.setDate(now.getDate() - diff);
+          return t >= startOfDay(start) && t <= endOfDay(now);
+        }
+        if (preset === "thisMonth") {
+          var mStart = new Date(now.getFullYear(), now.getMonth(), 1);
+          return t >= startOfDay(mStart) && t <= endOfDay(now);
+        }
+        if (preset === "custom") {
+          if (!customFrom && !customTo) return true;
+          var from = customFrom
+            ? new Date(customFrom + "T00:00:00").getTime()
+            : -Infinity;
+          var to = customTo
+            ? new Date(customTo + "T23:59:59").getTime()
+            : Infinity;
+          return t >= from && t <= to;
+        }
+        return true;
+      }
+
+      /* ---------- FILTER + SORT ---------- */
+      function getFilteredOrders() {
+        var base = getCashierOrders();
+
+        return base
+          .filter(function (o) {
+            if (!isInDateRange(o, filterDate)) return false;
+            if (
+              filterPayment !== "all" &&
+              getPaymentMethod(o) !== filterPayment
+            )
+              return false;
+            if (filterStatus !== "all" && getStatus(o) !== filterStatus)
+              return false;
+
+            if (searchQuery) {
+              var q = searchQuery.toLowerCase();
+              var fields = [o.id, o.cashier];
+              (o.products || []).forEach(function (p) {
+                fields.push(p.name);
+                fields.push(p.sku);
+              });
+              var hit = false;
+              for (var i = 0; i < fields.length; i++) {
+                var f = fields[i];
+                if (f && String(f).toLowerCase().indexOf(q) !== -1) {
+                  hit = true;
+                  break;
+                }
+              }
+              if (!hit) return false;
+            }
+            return true;
+          })
+          .sort(function (a, b) {
+            return new Date(b.date) - new Date(a.date);
+          });
+      }
+
+      /* ---------- PAGINATION HELPERS ---------- */
+      function buildPageList(current, total) {
+        var pages = [];
+        if (total <= 7) {
+          for (var i = 1; i <= total; i++) pages.push(i);
+          return pages;
+        }
+        pages.push(1);
+        var start = Math.max(2, current - 1);
+        var end = Math.min(total - 1, current + 1);
+        if (start > 2) pages.push("...");
+        for (var j = start; j <= end; j++) pages.push(j);
+        if (end < total - 1) pages.push("...");
+        pages.push(total);
+        return pages;
+      }
+
+      /* ---------- RENDER SUMMARY ---------- */
+      function renderSummary(filtered) {
+        var totalRevenue = 0;
+        var totalItems = 0;
+        for (var i = 0; i < filtered.length; i++) {
+          var t = calcTotals(filtered[i]);
+          totalRevenue += t.net;
+          totalItems += t.totalQty;
+        }
+        var totalOrders = filtered.length;
+        var avgOrder = totalOrders ? Math.round(totalRevenue / totalOrders) : 0;
+
+        summaryRow.innerHTML =
+          '<div class="summaryCard"><div class="summaryLabel">Orders</div><div class="summaryValue">' +
+          numberFmt(totalOrders) +
+          "</div></div>" +
+          '<div class="summaryCard"><div class="summaryLabel">Revenue</div><div class="summaryValue">' +
+          money(totalRevenue) +
+          "</div></div>" +
+          '<div class="summaryCard"><div class="summaryLabel">Items Sold</div><div class="summaryValue">' +
+          numberFmt(totalItems) +
+          "</div></div>" +
+          '<div class="summaryCard"><div class="summaryLabel">Avg. Order</div><div class="summaryValue">' +
+          money(avgOrder) +
+          "</div></div>";
+      }
+
+      /* ---------- RENDER TABLE ---------- */
+      function renderTable() {
+        allOrders = loadOrders();
+
+        var filtered = getFilteredOrders();
+        var totalItems = filtered.length;
+        var totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        var start = (currentPage - 1) * pageSize;
+        var end = Math.min(start + pageSize, totalItems);
+        var pageItems = filtered.slice(start, end);
+
+        orderCountEl.textContent =
+          totalItems + " order" + (totalItems === 1 ? "" : "s");
+
+        historyBody.innerHTML = "";
+
+        if (!totalItems) {
+          var emptyRow = document.createElement("tr");
+          emptyRow.innerHTML =
+            '<td colspan="7" class="emptyState">' +
+            '<div class="emptyIcon">&#128196;</div>' +
+            "<p>No orders found</p>" +
+            "<span>Try changing your filters or search.</span>" +
+            "</td>";
+          historyBody.appendChild(emptyRow);
+          renderSummary([]);
+          renderPagination(0, 1, 0, 0);
+          return;
+        }
+
+        renderSummary(filtered);
+
+        pageItems.forEach(function (o) {
+          var t = calcTotals(o);
+          var status = getStatus(o);
+          var payment = getPaymentMethod(o);
+          var itemLabel = t.totalQty + " item" + (t.totalQty === 1 ? "" : "s");
+
+          var tr = document.createElement("tr");
+
+          var cells = "";
+          cells +=
+            '<td class="orderIdCell" title="' +
+            esc(o.id) +
+            '">' +
+            esc(o.id) +
+            "</td>";
+          cells +=
+            '<td class="dateCell">' +
+            "<strong>" +
+            formatDate(o.date) +
+            "</strong>" +
+            "<span>" +
+            formatTime(o.date) +
+            "</span>" +
+            "</td>";
+          cells += '<td><span class="itemsPill">' + itemLabel + "</span></td>";
+          cells += "<td>" + paymentPill(payment) + "</td>";
+          cells += '<td class="right amountCell">' + money(t.net) + "</td>";
+          cells += "<td>" + statusPill(status) + "</td>";
+          cells +=
+            '<td class="actionsCell">' +
+            '<button class="viewBtn" type="button" data-id="' +
+            esc(o.id) +
+            '">View</button>' +
+            "</td>";
+
+          tr.innerHTML = cells;
+          historyBody.appendChild(tr);
+        });
+
+        renderPagination(totalItems, totalPages, start, end);
+      }
+
+      function renderPagination(totalItems, totalPages, start, end) {
+        if (!totalItems) {
+          paginationInfo.textContent = "Showing 0 of 0";
+        } else {
+          paginationInfo.innerHTML =
+            "Showing <strong>" +
+            (start + 1) +
+            "-" +
+            end +
+            "</strong> of <strong>" +
+            totalItems +
+            "</strong>";
+        }
+
+        prevPageBtn.disabled = currentPage <= 1 || !totalItems;
+        nextPageBtn.disabled = currentPage >= totalPages || !totalItems;
+
+        if (totalPages <= 1) {
+          pageNumbersEl.innerHTML = "";
+          return;
+        }
+
+        var pages = buildPageList(currentPage, totalPages);
+        var html = "";
+        for (var i = 0; i < pages.length; i++) {
+          var p = pages[i];
+          if (p === "...") {
+            html += '<span class="pageEllipsis">...</span>';
+          } else {
+            html +=
+              '<button class="pageNumberBtn' +
+              (p === currentPage ? " active" : "") +
+              '" type="button" data-page="' +
+              p +
+              '">' +
+              p +
+              "</button>";
+          }
+        }
+        pageNumbersEl.innerHTML = html;
+      }
+
+      /* ---------- DETAIL MODAL ---------- */
+      function openDetail(orderId) {
+        var o = null;
+        for (var i = 0; i < allOrders.length; i++) {
+          if (String(allOrders[i].id) === String(orderId)) {
+            o = allOrders[i];
+            break;
+          }
+        }
+        if (!o) return;
+
+        activeOrderId = o.id;
+        var t = calcTotals(o);
+
+        modalOrderId.textContent = o.id;
+        modalCashier.textContent = o.cashier || "-";
+        modalDateTime.textContent = formatDateTime(o.date);
+        modalPayment.textContent = getPaymentMethod(o);
+        modalStatus.innerHTML = statusPill(getStatus(o));
+
+        var itemsHtml = "";
+        (o.products || []).forEach(function (p) {
+          var metaArr = [];
+          if (p.sku) metaArr.push(p.sku);
+          if (p.category) metaArr.push(p.category);
+          var meta = metaArr.join(" - ");
+          var amount = (Number(p.qty) || 0) * (Number(p.price) || 0);
+          itemsHtml +=
+            "<tr>" +
+            "<td>" +
+            '<span class="itemName">' +
+            esc(p.name) +
+            "</span>" +
+            (meta ? '<span class="itemMeta">' + esc(meta) + "</span>" : "") +
+            "</td>" +
+            "<td>" +
+            numberFmt(p.qty) +
+            "</td>" +
+            "<td>" +
+            numberFmt(p.price) +
+            "</td>" +
+            '<td class="right">' +
+            numberFmt(amount) +
+            "</td>" +
+            "</tr>";
+        });
+        modalItems.innerHTML = itemsHtml;
+
+        modalSubtotal.textContent = money(t.subtotal);
+        modalDiscount.textContent =
+          t.discount > 0 ? "-" + money(t.discount) : money(0);
+        modalTax.textContent = money(t.tax);
+        modalNet.textContent = money(t.net);
+        modalReceived.textContent = money(t.received);
+        modalChange.textContent = money(t.change);
+
+        detailModal.classList.add("open");
+        detailModal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeDetail() {
+        detailModal.classList.remove("open");
+        detailModal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        activeOrderId = null;
+      }
+
+      /* ---------- REPRINT RECEIPT ---------- */
+      function buildItemsRows(order) {
+        var html = "";
+        (order.products || []).forEach(function (p) {
+          var metaArr = [];
+          if (p.sku) metaArr.push(p.sku);
+          if (p.category) metaArr.push(p.category);
+          var meta = metaArr.join(" - ");
+          var amount = (Number(p.qty) || 0) * (Number(p.price) || 0);
+          html +=
+            "<tr>" +
+            "<td>" +
+            '<span class="item-name">' +
+            esc(p.name) +
+            "</span>" +
+            (meta ? '<span class="item-meta">' + esc(meta) + "</span>" : "") +
+            "</td>" +
+            "<td>" +
+            numberFmt(p.qty) +
+            "</td>" +
+            "<td>" +
+            numberFmt(p.price) +
+            "</td>" +
+            "<td>" +
+            numberFmt(amount) +
+            "</td>" +
+            "</tr>";
+        });
+        return html;
+      }
+
+      function buildReceiptHtml(order) {
+        var t = calcTotals(order);
+        var itemsHtml = buildItemsRows(order);
+
+        var html = "";
+        html += '<div class="receipt-container">';
+        html += '<header class="shopInfoContainer">';
+        html += "<h1>Tea Leaves</h1>";
+        html +=
+          '<p class="shop-location">No. 17-29, Bagayar Road,<br />Sanchaung Township</p>';
+        html +=
+          '<p class="shop-phone">Ph: 09-775 330 034, 779 829 159,<br />973 465 852</p>';
+        html += '<p class="shop-time">Open Daily: 8:00 AM - 7:00 PM</p>';
+        html += "</header>";
+
+        html += '<section class="orderInfoContainer">';
+        html += "<div>";
+        html +=
+          '<div class="labelAndValue"><span>ORDER NO.</span><span>' +
+          esc(order.id) +
+          "</span></div>";
+        html +=
+          '<div class="labelAndValue"><span>CASHIER</span><span>' +
+          esc(order.cashier || "-") +
+          "</span></div>";
+        html += "</div>";
+        html += "<div>";
+        html +=
+          '<div class="labelAndValue"><span>DATE</span><span>' +
+          formatDate(order.date) +
+          "</span></div>";
+        html +=
+          '<div class="labelAndValue"><span>TIME</span><span>' +
+          formatTime(order.date) +
+          "</span></div>";
+        html += "</div>";
+        html += "</section>";
+
+        html += '<section class="orderItemTable">';
+        html += '<table class="order-item-list">';
+        html +=
+          "<thead><tr><th>Description</th><th>Qty</th><th>Price</th><th>Amount</th></tr></thead>";
+        html += "<tbody>" + itemsHtml + "</tbody>";
+        html += "</table>";
+
+        html += '<div class="ruler"></div>';
+
+        html +=
+          '<div class="line"><span>Subtotal (' +
+          t.totalQty +
+          " items)</span><span>" +
+          money(t.subtotal) +
+          "</span></div>";
+        html +=
+          '<div class="line"><span>Discount</span><span>' +
+          money(t.discount) +
+          "</span></div>";
+        html +=
+          '<div class="line"><span>Tax</span><span>' +
+          money(t.tax) +
+          "</span></div>";
+        html +=
+          '<div class="line net"><span>NET AMOUNT</span><span>' +
+          money(t.net) +
+          "</span></div>";
+        html +=
+          '<div class="line"><span>Received</span><span>' +
+          money(t.received) +
+          "</span></div>";
+
+        html += '<div class="ruler"></div>';
+
+        html +=
+          '<div class="line change"><span>CHANGE</span><span>' +
+          money(t.change) +
+          "</span></div>";
+        html += "</section>";
+
+        html += '<footer class="receipt-footer">';
+        html += '<p class="thank-you">Thank You for Visiting!</p>';
+        html += "<p>We appreciate your support.</p>";
+        html += "<p>Please visit us again.</p>";
+        html += '<div class="divider"></div>';
+        html += "<p>Please keep this receipt for your records.</p>";
+        html += "</footer>";
+
+        html += "</div>";
+        return html;
+      }
+
+      function getPrintCss() {
+        var css = "";
+        css += "@page { margin: 10mm; }";
+        css += "* { box-sizing: border-box; }";
+        css +=
+          "body { margin: 0; padding: 16px; font-family: 'Courier New', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; line-height: 1.45; color: #111827; background: #ffffff; }";
+        css += "p { margin: 0; }";
+        css +=
+          ".receipt-container { width: 320px; margin: 0 auto; padding: 20px 22px 24px; background: #ffffff; }";
+        css += ".shopInfoContainer { text-align: center; }";
+        css +=
+          ".shopInfoContainer h1 { font-family: 'Great Vibes', cursive; font-size: 32px; font-weight: 400; margin: 0 0 6px; letter-spacing: 0.02em; }";
+        css +=
+          ".shop-location, .shop-phone { font-size: 11px; color: #374151; }";
+        css +=
+          ".shop-time { margin-top: 6px; font-size: 10.5px; color: #6b7280; }";
+        css +=
+          ".orderInfoContainer { display: flex; justify-content: space-between; gap: 14px; margin-top: 14px; padding-top: 12px; border-top: 1px dashed #9ca3af; font-size: 11px; }";
+        css += ".orderInfoContainer > div { flex: 1 1 0; min-width: 0; }";
+        css +=
+          ".labelAndValue { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 4px; }";
+        css +=
+          ".labelAndValue span:first-child { color: #6b7280; letter-spacing: 0.05em; white-space: nowrap; }";
+        css +=
+          ".labelAndValue span:last-child { font-weight: 700; text-align: right; word-break: break-word; }";
+        css += ".orderItemTable { margin-top: 14px; }";
+        css +=
+          ".order-item-list { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 11px; }";
+        css +=
+          ".order-item-list th { padding: 4px 0 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #6b7280; text-align: right; border-bottom: 1px dashed #9ca3af; }";
+        css +=
+          ".order-item-list th:first-child { width: 44%; text-align: left; }";
+        css += ".order-item-list th:nth-child(2) { width: 12%; }";
+        css += ".order-item-list th:nth-child(3) { width: 22%; }";
+        css += ".order-item-list th:nth-child(4) { width: 22%; }";
+        css +=
+          ".order-item-list td { padding: 6px 0; text-align: right; vertical-align: top; word-break: break-word; }";
+        css +=
+          ".order-item-list td:first-child { text-align: left; padding-right: 8px; }";
+        css += ".item-name { display: block; font-weight: 700; }";
+        css +=
+          ".item-meta { display: block; font-size: 9.5px; color: #6b7280; }";
+        css += ".ruler { border-top: 1px dashed #9ca3af; margin: 10px 0; }";
+        css +=
+          ".line { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 2px 0; }";
+        css +=
+          ".line.net { margin-top: 6px; padding-top: 6px; border-top: 1px solid #111827; font-size: 14px; font-weight: 800; }";
+        css += ".line.change { font-size: 14px; font-weight: 800; }";
+        css +=
+          ".receipt-footer { margin-top: 16px; text-align: center; font-size: 11px; color: #374151; }";
+        css +=
+          ".receipt-footer .thank-you { font-size: 13px; font-weight: 700; margin-bottom: 4px; }";
+        css +=
+          ".receipt-footer .divider { border-top: 1px dashed #9ca3af; margin: 10px 0; }";
+        return css;
+      }
+
+      function reprintReceipt(orderId) {
+        var o = null;
+        for (var i = 0; i < allOrders.length; i++) {
+          if (String(allOrders[i].id) === String(orderId)) {
+            o = allOrders[i];
+            break;
+          }
+        }
+        if (!o) return;
+
+        var receiptHtml = buildReceiptHtml(o);
+        var printCss = getPrintCss();
+
+        var iframe = document.createElement("iframe");
+        iframe.style.position = "fixed";
+        iframe.style.right = "0";
+        iframe.style.bottom = "0";
+        iframe.style.width = "0";
+        iframe.style.height = "0";
+        iframe.style.border = "0";
+        iframe.style.visibility = "hidden";
+        document.body.appendChild(iframe);
+
+        var doc = iframe.contentWindow.document;
+
+        // Split closing tags so Live Server never injects its own script
+        // inside our string and breaks the parse.
+        var closeBody = "</bo" + "dy></ht" + "ml>";
+
+        var fullHtml =
+          "<!doctype html><html><head><meta charset='utf-8' />" +
+          "<title>Receipt</title>" +
+          "<link href='https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap' rel='stylesheet' />" +
+          "<style>" +
+          printCss +
+          "</style></head><body>" +
+          receiptHtml +
+          closeBody;
+
+        doc.open();
+        doc.write(fullHtml);
+        doc.close();
+
+        function triggerPrint() {
+          try {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+          } catch (err) {
+            console.error(err);
+          } finally {
+            setTimeout(function () {
+              if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+            }, 1200);
+          }
+        }
+
+        if (iframe.contentWindow.document.readyState === "complete") {
+          setTimeout(triggerPrint, 400);
+        } else {
+          iframe.addEventListener("load", function () {
+            setTimeout(triggerPrint, 400);
+          });
+        }
+      }
+      /* ---------- EVENTS ---------- */
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", function () {
+          localStorage.removeItem("currentUser");
+          window.location.href = "/";
+        });
+
+      searchInput.addEventListener("input", function () {
+        searchQuery = searchInput.value;
+        clearSearchBtn.hidden = !searchQuery;
+        currentPage = 1;
+        renderTable();
+      });
+
+      searchInput.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && searchInput.value) {
+          e.preventDefault();
+          clearSearch();
+        }
+      });
+
+      clearSearchBtn.addEventListener("click", clearSearch);
+
+      function clearSearch() {
+        searchInput.value = "";
+        searchQuery = "";
+        clearSearchBtn.hidden = true;
+        currentPage = 1;
+        renderTable();
+        searchInput.focus();
+      }
+
+      filterDateEl.addEventListener("change", function () {
+        filterDate = filterDateEl.value;
+        customDateRow.hidden = filterDate !== "custom";
+        currentPage = 1;
+        renderTable();
+      });
+
+      dateFromInput.addEventListener("change", function () {
+        customFrom = dateFromInput.value;
+        currentPage = 1;
+        renderTable();
+      });
+
+      dateToInput.addEventListener("change", function () {
+        customTo = dateToInput.value;
+        currentPage = 1;
+        renderTable();
+      });
+
+      filterPaymentEl.addEventListener("change", function () {
+        filterPayment = filterPaymentEl.value;
+        currentPage = 1;
+        renderTable();
+      });
+
+      filterStatusEl.addEventListener("change", function () {
+        filterStatus = filterStatusEl.value;
+        currentPage = 1;
+        renderTable();
+      });
+
+      resetFiltersBtn.addEventListener("click", function () {
+        searchInput.value = "";
+        searchQuery = "";
+        clearSearchBtn.hidden = true;
+
+        filterDateEl.value = "all";
+        filterPaymentEl.value = "all";
+        filterStatusEl.value = "all";
+        filterDate = "all";
+        filterPayment = "all";
+        filterStatus = "all";
+
+        customFrom = "";
+        customTo = "";
+        dateFromInput.value = "";
+        dateToInput.value = "";
+        customDateRow.hidden = true;
+
+        currentPage = 1;
+        renderTable();
+      });
+
+      pageSizeSelect.addEventListener("change", function () {
+        pageSize = parseInt(pageSizeSelect.value, 10) || 10;
+        currentPage = 1;
+        renderTable();
+      });
+
+      prevPageBtn.addEventListener("click", function () {
+        if (currentPage > 1) {
+          currentPage--;
+          renderTable();
+        }
+      });
+
+      nextPageBtn.addEventListener("click", function () {
+        var totalPages = Math.ceil(getFilteredOrders().length / pageSize);
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderTable();
+        }
+      });
+
+      pageNumbersEl.addEventListener("click", function (e) {
+        var btn = e.target.closest(".pageNumberBtn");
+        if (!btn) return;
+        currentPage = parseInt(btn.dataset.page, 10);
+        renderTable();
+      });
+
+      historyBody.addEventListener("click", function (e) {
+        var btn = e.target.closest(".viewBtn");
+        if (!btn) return;
+        openDetail(btn.dataset.id);
+      });
+
+      document
+        .getElementById("modalCloseBtn")
+        .addEventListener("click", closeDetail);
+      document
+        .getElementById("cancelDetailBtn")
+        .addEventListener("click", closeDetail);
+
+      document
+        .getElementById("reprintBtn")
+        .addEventListener("click", function () {
+          if (activeOrderId) reprintReceipt(activeOrderId);
+        });
+
+      detailModal.addEventListener("click", function (e) {
+        if (e.target === detailModal) closeDetail();
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && detailModal.classList.contains("open")) {
+          closeDetail();
+        }
+      });
+
+      /* ---------- INIT ---------- */
+      renderTable();
+    </script>
+  </body>
+</html>

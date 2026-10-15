@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings — Admin</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./style/adminStyle.css" />
+    <link rel="stylesheet" href="./style/settingsStyle.css" />
+  </head>
+
+  <body>
+    <div class="adminLayout">
+      <!-- ============================================================
+           SIDEBAR
+           ============================================================ -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebarBrand">
+          <div class="brandMark">TL</div>
+          <div class="brandText">
+            <span class="brandName">Tea Leaves</span>
+            <span class="brandSub">POS Admin</span>
+          </div>
+        </div>
+
+        <nav class="sidebarNav" aria-label="Main navigation">
+          <span class="navSectionLabel">Main</span>
+
+          <a href="./dashboard.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
+            </svg>
+            <span>Dashboard</span>
+          </a>
+
+          <a href="./products.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+              />
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+              <line x1="12" y1="22.08" x2="12" y2="12" />
+            </svg>
+            <span>Products</span>
+          </a>
+
+          <a href="./categories.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
+              />
+              <line x1="7" y1="7" x2="7.01" y2="7" />
+            </svg>
+            <span>Categories</span>
+          </a>
+
+          <a href="./inventory.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+            </svg>
+            <span>Inventory</span>
+          </a>
+
+          <span class="navSectionLabel">Operations</span>
+
+          <a href="./cashierRequests.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+              />
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+              <path d="M9 14l2 2 4-4" />
+            </svg>
+            <span>Cashier Requests</span>
+            <span class="navBadge" id="navRequestsBadge">0</span>
+          </a>
+
+          <a href="./orders.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+              />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="9" y1="15" x2="15" y2="15" />
+              <line x1="9" y1="11" x2="15" y2="11" />
+            </svg>
+            <span>Orders &amp; Receipts</span>
+          </a>
+
+          <a href="./cashierManagement.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            <span>Cashier Management</span>
+          </a>
+
+          <span class="navSectionLabel">Insights</span>
+
+          <a href="./reports.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
+            <span>Reports &amp; Analytics</span>
+          </a>
+
+          <a href="./settings.html" class="navItem active">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+              />
+            </svg>
+            <span>Settings</span>
+          </a>
+        </nav>
+
+        <div class="sidebarFooter">
+          <a href="./logout.html" class="navItem navItemDanger">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            <span>Logout</span>
+          </a>
+        </div>
+      </aside>
+
+      <!-- ============================================================
+           MAIN AREA
+           ============================================================ -->
+      <div class="adminMain">
+        <header class="topbar">
+          <button
+            class="iconBtn sidebarToggle"
+            id="sidebarToggle"
+            aria-label="Toggle sidebar"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+
+          <div class="topbarTitle">
+            <h1>Settings</h1>
+            <p class="breadcrumb">
+              <span>Admin</span>
+              <span class="sep">/</span>
+              <span class="current">Settings</span>
+            </p>
+          </div>
+
+          <div class="topbarActions">
+            <div class="topbarSearch">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="search"
+                placeholder="Search orders, products, cashiers…"
+                aria-label="Global search"
+              />
+            </div>
+
+            <div class="dropdown" id="notifDropdown">
+              <button
+                class="iconBtn"
+                data-dropdown-toggle
+                aria-label="Notifications"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                <span class="notifBadge" id="notifBadge">0</span>
+              </button>
+
+              <div class="dropdownMenu notifMenu" data-dropdown-menu>
+                <div class="dropdownHeader">
+                  <span>Notifications</span>
+                  <span class="dropdownHeaderCount" id="notifHeaderCount"
+                    >0 new</span
+                  >
+                </div>
+                <ul class="notifList" id="notifList"></ul>
+                <div class="dropdownFooter">
+                  <a href="./cashierRequests.html">View all notifications</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="dropdown" id="profileDropdown">
+              <button class="profileBtn" data-dropdown-toggle>
+                <span class="avatar">AD</span>
+                <span class="profileMeta">
+                  <span class="profileName">Admin User</span>
+                  <span class="profileRole">Administrator</span>
+                </span>
+                <svg
+                  class="chev"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+
+              <div class="dropdownMenu profileMenu" data-dropdown-menu>
+                <div class="profileMenuHead">
+                  <span class="avatar avatarLg">AD</span>
+                  <div>
+                    <div class="profileName">Admin User</div>
+                    <div class="profileRole">admin@tealeaves.com</div>
+                  </div>
+                </div>
+                <a href="./settings.html" class="dropdownItem">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                      d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+                    />
+                  </svg>
+                  Account Settings
+                </a>
+                <a href="./settings.html#password" class="dropdownItem">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  Change Password
+                </a>
+                <div class="dropdownDivider"></div>
+                <a href="./logout.html" class="dropdownItem dropdownItemDanger">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                  Sign out
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- ---------- MAIN CONTENT ---------- -->
+        <main class="pageContent">
+          <div class="pageHeader">
+            <div>
+              <h2>Settings</h2>
+              <p class="pageDescription">
+                Configure your store, business preferences, and account.
+              </p>
+            </div>
+          </div>
+
+          <!-- ---------- SECTION TABS ---------- -->
+          <div class="settingsTabs" id="settingsTabs" role="tablist">
+            <button class="settingsTab active" data-tab="store" role="tab">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+              Store Information
+            </button>
+            <button class="settingsTab" data-tab="business" role="tab">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+              </svg>
+              Business Preferences
+            </button>
+            <button class="settingsTab" data-tab="account" role="tab">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              Account
+            </button>
+          </div>
+
+          <!-- ================= STORE INFORMATION ================= -->
+          <section class="settingsPanel" id="panel-store">
+            <form id="storeForm" novalidate>
+              <div class="settingsCard">
+                <div class="settingsCardHead">
+                  <div class="settingsCardIcon primary">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path
+                        d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+                      />
+                      <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3>Store Information</h3>
+                    <p>Basic details shown on receipts and reports.</p>
+                  </div>
+                </div>
+
+                <div class="settingsGrid">
+                  <div class="formGroup formGroupFull">
+                    <label for="storeName"
+                      >Store Name <span class="requiredMark">*</span></label
+                    >
+                    <input
+                      class="field"
+                      type="text"
+                      id="storeName"
+                      required
+                      placeholder="e.g. Tea Leaves"
+                    />
+                    <span class="errorText" id="error-storeName"></span>
+                  </div>
+
+                  <div class="formGroup formGroupFull">
+                    <label>Store Logo</label>
+                    <div class="logoUploader">
+                      <div class="logoPreview" id="logoPreview">
+                        <span>TL</span>
+                      </div>
+                      <div class="logoActions">
+                        <input
+                          type="file"
+                          id="logoInput"
+                          accept="image/*"
+                          hidden
+                        />
+                        <button
+                          class="btn btnSecondary"
+                          type="button"
+                          id="uploadLogoBtn"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            width="15"
+                            height="15"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path
+                              d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                            />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" y1="3" x2="12" y2="15" />
+                          </svg>
+                          Upload Logo
+                        </button>
+                        <button
+                          class="btn btnGhost"
+                          type="button"
+                          id="removeLogoBtn"
+                        >
+                          Remove
+                        </button>
+                        <span class="fieldHint">PNG or JPG, max 500 KB.</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="formGroup formGroupFull">
+                    <label for="storeAddress"
+                      >Address <span class="requiredMark">*</span></label
+                    >
+                    <textarea
+                      class="field"
+                      id="storeAddress"
+                      rows="2"
+                      required
+                      placeholder="No. 17-29, Bagayar Road, Sanchaung Township"
+                    ></textarea>
+                    <span class="errorText" id="error-storeAddress"></span>
+                  </div>
+
+                  <div class="formGroup">
+                    <label for="storePhone"
+                      >Phone Number <span class="requiredMark">*</span></label
+                    >
+                    <input
+                      class="field"
+                      type="text"
+                      id="storePhone"
+                      required
+                      placeholder="09-775 330 034"
+                    />
+                    <span class="errorText" id="error-storePhone"></span>
+                  </div>
+
+                  <div class="formGroup">
+                    <label for="storeEmail">Contact Email</label>
+                    <input
+                      class="field"
+                      type="email"
+                      id="storeEmail"
+                      placeholder="hello@tealeaves.com"
+                    />
+                    <span class="errorText" id="error-storeEmail"></span>
+                  </div>
+
+                  <div class="formGroup formGroupFull">
+                    <label for="receiptFooter">Receipt Footer Message</label>
+                    <textarea
+                      class="field"
+                      id="receiptFooter"
+                      rows="2"
+                      placeholder="Thank you for visiting! Please come again."
+                    ></textarea>
+                    <span class="fieldHint"
+                      >This message appears at the bottom of every printed
+                      receipt.</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="settingsFooter">
+                <button
+                  class="btn btnSecondary"
+                  type="button"
+                  id="resetStoreBtn"
+                >
+                  Discard Changes
+                </button>
+                <button class="btn btnPrimary" type="submit">
+                  Save Store Information
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <!-- ================= BUSINESS PREFERENCES ================= -->
+          <section class="settingsPanel" id="panel-business" hidden>
+            <form id="businessForm" novalidate>
+              <div class="settingsCard">
+                <div class="settingsCardHead">
+                  <div class="settingsCardIcon info">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3>Business Preferences</h3>
+                    <p>
+                      Control currency, time zone, and defaults across the
+                      system.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="settingsGrid">
+                  <div class="formGroup">
+                    <label for="currency"
+                      >Currency <span class="requiredMark">*</span></label
+                    >
+                    <select class="field" id="currency" required>
+                      <option value="MMK">MMK — Myanmar Kyat</option>
+                      <option value="USD">USD — US Dollar</option>
+                      <option value="THB">THB — Thai Baht</option>
+                      <option value="SGD">SGD — Singapore Dollar</option>
+                    </select>
+                    <span class="fieldHint"
+                      >Used on receipts and all monetary displays.</span
+                    >
+                  </div>
+
+                  <div class="formGroup">
+                    <label for="timezone"
+                      >Time Zone <span class="requiredMark">*</span></label
+                    >
+                    <select class="field" id="timezone" required>
+                      <option value="Asia/Yangon">
+                        Asia/Yangon (UTC+06:30)
+                      </option>
+                      <option value="Asia/Bangkok">
+                        Asia/Bangkok (UTC+07:00)
+                      </option>
+                      <option value="Asia/Singapore">
+                        Asia/Singapore (UTC+08:00)
+                      </option>
+                      <option value="UTC">UTC</option>
+                    </select>
+                  </div>
+
+                  <div class="formGroup">
+                    <label for="dateFormat"
+                      >Date Format <span class="requiredMark">*</span></label
+                    >
+                    <select class="field" id="dateFormat" required>
+                      <option value="DD/MM/YYYY">
+                        DD/MM/YYYY (e.g. 31/10/2026)
+                      </option>
+                      <option value="MM/DD/YYYY">
+                        MM/DD/YYYY (e.g. 10/31/2026)
+                      </option>
+                      <option value="YYYY-MM-DD">
+                        YYYY-MM-DD (e.g. 2026-10-31)
+                      </option>
+                      <option value="DD MMM YYYY">
+                        DD MMM YYYY (e.g. 31 Oct 2026)
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="formGroup">
+                    <label for="timeFormat"
+                      >Time Format <span class="requiredMark">*</span></label
+                    >
+                    <select class="field" id="timeFormat" required>
+                      <option value="12h">12-hour (e.g. 06:30 PM)</option>
+                      <option value="24h">24-hour (e.g. 18:30)</option>
+                    </select>
+                  </div>
+
+                  <div class="formGroup">
+                    <label for="minStockDefault"
+                      >Default Minimum Stock Threshold</label
+                    >
+                    <input
+                      class="field"
+                      type="number"
+                      id="minStockDefault"
+                      min="0"
+                      step="1"
+                      placeholder="10"
+                    />
+                    <span class="fieldHint"
+                      >Applied to new products unless overridden.</span
+                    >
+                  </div>
+
+                  <div class="formGroup">
+                    <label for="taxRate">Default Tax Rate (%)</label>
+                    <input
+                      class="field"
+                      type="number"
+                      id="taxRate"
+                      min="0"
+                      step="0.01"
+                      placeholder="7"
+                    />
+                    <span class="fieldHint"
+                      >Default tax applied to new sales.</span
+                    >
+                  </div>
+
+                  <div class="formGroup formGroupFull">
+                    <label>Receipt Printing Preferences</label>
+                    <div class="checkboxList">
+                      <label class="checkRow">
+                        <input type="checkbox" id="printAutoCut" />
+                        <span class="checkLabel">
+                          <strong>Auto-cut after printing</strong>
+                          <span
+                            >Send the cut command to thermal printers after each
+                            receipt.</span
+                          >
+                        </span>
+                      </label>
+
+                      <label class="checkRow">
+                        <input type="checkbox" id="printShowLogo" />
+                        <span class="checkLabel">
+                          <strong>Show store logo on receipt</strong>
+                          <span
+                            >Print the uploaded logo at the top of each
+                            receipt.</span
+                          >
+                        </span>
+                      </label>
+
+                      <label class="checkRow">
+                        <input type="checkbox" id="printShowTax" />
+                        <span class="checkLabel">
+                          <strong>Show tax breakdown</strong>
+                          <span>Display separate tax line on receipts.</span>
+                        </span>
+                      </label>
+
+                      <label class="checkRow">
+                        <input type="checkbox" id="printShowCashier" />
+                        <span class="checkLabel">
+                          <strong>Show cashier name</strong>
+                          <span>Print the cashier's name on each receipt.</span>
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="settingsFooter">
+                <button
+                  class="btn btnSecondary"
+                  type="button"
+                  id="resetBusinessBtn"
+                >
+                  Discard Changes
+                </button>
+                <button class="btn btnPrimary" type="submit">
+                  Save Preferences
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <!-- ================= ACCOUNT SETTINGS ================= -->
+          <section class="settingsPanel" id="panel-account" hidden>
+            <!-- Profile card -->
+            <form id="profileForm" novalidate>
+              <div class="settingsCard">
+                <div class="settingsCardHead">
+                  <div class="settingsCardIcon success">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3>Administrator Profile</h3>
+                    <p>Update your display name and contact information.</p>
+                  </div>
+                </div>
+
+                <div class="profileHeader">
+                  <div class="profileAvatar" id="profileAvatarLarge">AD</div>
+                  <div class="profileHeaderText">
+                    <strong id="profileHeaderName">Admin User</strong>
+                    <span id="profileHeaderEmail">admin@tealeaves.com</span>
+                  </div>
+                </div>
+
+                <div class="settingsGrid">
+                  <div class="formGroup">
+                    <label for="accountUsername"
+                      >Username <span class="requiredMark">*</span></label
+                    >
+                    <input
+                      class="field"
+                      type="text"
+                      id="accountUsername"
+                      required
+                      placeholder="e.g. aung hein"
+                    />
+                    <span class="errorText" id="error-accountUsername"></span>
+                  </div>
+
+                  <div class="formGroup">
+                    <label for="accountEmail"
+                      >Email <span class="requiredMark">*</span></label
+                    >
+                    <input
+                      class="field"
+                      type="email"
+                      id="accountEmail"
+                      required
+                      placeholder="e.g. admin@example.com"
+                    />
+                    <span class="errorText" id="error-accountEmail"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="settingsFooter">
+                <button
+                  class="btn btnSecondary"
+                  type="button"
+                  id="resetProfileBtn"
+                >
+                  Discard Changes
+                </button>
+                <button class="btn btnPrimary" type="submit">
+                  Save Profile
+                </button>
+              </div>
+            </form>
+
+            <!-- Password card -->
+            <form id="passwordForm" novalidate>
+              <div class="settingsCard" id="password">
+                <div class="settingsCardHead">
+                  <div class="settingsCardIcon warning">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3>Change Password</h3>
+                    <p>Use a strong password with at least 8 characters.</p>
+                  </div>
+                </div>
+
+                <div class="settingsGrid">
+                  <div class="formGroup formGroupFull">
+                    <label for="currentPassword"
+                      >Current Password
+                      <span class="requiredMark">*</span></label
+                    >
+                    <div class="passwordInput">
+                      <input
+                        class="field"
+                        type="password"
+                        id="currentPassword"
+                        required
+                        autocomplete="current-password"
+                        placeholder="Enter current password"
+                      />
+                      <button
+                        class="passwordToggle"
+                        type="button"
+                        data-toggle-for="currentPassword"
+                        aria-label="Show password"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                          />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      </button>
+                    </div>
+                    <span class="errorText" id="error-currentPassword"></span>
+                  </div>
+
+                  <div class="formGroup formGroupFull">
+                    <label for="newPassword"
+                      >New Password <span class="requiredMark">*</span></label
+                    >
+                    <div class="passwordInput">
+                      <input
+                        class="field"
+                        type="password"
+                        id="newPassword"
+                        required
+                        autocomplete="new-password"
+                        placeholder="Minimum 8 characters"
+                      />
+                      <button
+                        class="passwordToggle"
+                        type="button"
+                        data-toggle-for="newPassword"
+                        aria-label="Show password"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                          />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      </button>
+                    </div>
+                    <span class="errorText" id="error-newPassword"></span>
+
+                    <div class="passwordStrength" id="passwordStrength" hidden>
+                      <div class="strengthBars">
+                        <span class="strengthBar"></span>
+                        <span class="strengthBar"></span>
+                        <span class="strengthBar"></span>
+                        <span class="strengthBar"></span>
+                      </div>
+                      <span class="strengthLabel" id="strengthLabel">Weak</span>
+                    </div>
+                  </div>
+
+                  <div class="formGroup formGroupFull">
+                    <label for="confirmPassword"
+                      >Confirm New Password
+                      <span class="requiredMark">*</span></label
+                    >
+                    <div class="passwordInput">
+                      <input
+                        class="field"
+                        type="password"
+                        id="confirmPassword"
+                        required
+                        autocomplete="new-password"
+                        placeholder="Repeat new password"
+                      />
+                      <button
+                        class="passwordToggle"
+                        type="button"
+                        data-toggle-for="confirmPassword"
+                        aria-label="Show password"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path
+                            d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                          />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                      </button>
+                    </div>
+                    <span class="errorText" id="error-confirmPassword"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="settingsFooter">
+                <button class="btn btnPrimary" type="submit">
+                  Update Password
+                </button>
+              </div>
+            </form>
+
+            <!-- Sign out card -->
+            <div class="settingsCard">
+              <div class="settingsCardHead">
+                <div class="settingsCardIcon danger">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                </div>
+                <div>
+                  <h3>Sign Out</h3>
+                  <p>End your session on this device.</p>
+                </div>
+              </div>
+              <div class="signOutRow">
+                <p class="fieldHint">
+                  You'll need to sign in again to access the admin panel.
+                </p>
+                <button class="btn btnDanger" id="logoutBtn">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="15"
+                    height="15"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                  Log Out
+                </button>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- ================= TOAST ================= -->
+    <div class="toast" id="toast" hidden>
+      <span class="toastIcon" id="toastIcon">✓</span>
+      <span class="toastText" id="toastText">Saved successfully</span>
+    </div>
+    <script src="../Authentication/auth.js"></script>
+    <script src="./script/settings.js" defer></script>
+  </body>
+</html>

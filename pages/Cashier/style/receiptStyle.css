@@ -1,0 +1,715 @@
+* {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+body {
+    margin: 0;
+    font-family:
+        "Segoe UI",
+        system-ui,
+        -apple-system,
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+    background: #f4f6f8;
+    color: #1f2933;
+    -webkit-font-smoothing: antialiased;
+}
+
+.screenLayout {
+    display: flex;
+    align-items: stretch;
+    min-height: 100vh;
+}
+
+.receiptPageLayout {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 24px;
+}
+
+/* ============ ORDER LIST PANEL ============ */
+.orderListPanel {
+    flex: 1 1 auto;
+    min-width: 0;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.07);
+    padding: 18px 20px 20px;
+}
+
+.panelHeader {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.panelHeader h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.orderCount {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* ---------- SEARCH ---------- */
+.searchRow {
+    margin-bottom: 14px;
+}
+
+.searchBox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0 10px;
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease,
+        background-color 0.15s ease;
+}
+
+.searchBox:focus-within {
+    border-color: #0f766e;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
+}
+
+.searchIcon {
+    font-size: 13px;
+    opacity: 0.65;
+    line-height: 1;
+}
+
+.searchInput {
+    flex: 1 1 auto;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    padding: 10px 0;
+    font-size: 13px;
+    font-family: inherit;
+    color: #1f2933;
+}
+
+.searchInput::placeholder {
+    color: #94a3b8;
+}
+
+/* hide the native ✕ of type="search" (we use our own button) */
+.searchInput::-webkit-search-cancel-button {
+    display: none;
+}
+
+.clearSearchBtn {
+    border: 0;
+    background: #e2e8f0;
+    color: #475569;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.clearSearchBtn:hover {
+    background: #cbd5e1;
+    color: #1f2933;
+}
+
+.tableWrap {
+    overflow-x: auto;
+}
+
+.orderTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.orderTable th {
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6b7280;
+    border-bottom: 2px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+.orderTable td {
+    padding: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.orderTable tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.orderTable tbody tr:hover {
+    background: #f8fafc;
+}
+
+.orderTable tbody tr.active {
+    background: #ecfdf5;
+    box-shadow: inset 3px 0 0 #0f766e;
+}
+
+.orderTable .order-id-cell {
+    font-family: "Courier New", ui-monospace, monospace;
+    font-size: 12px;
+    color: #334155;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.orderTable .amount-cell {
+    font-weight: 700;
+    text-align: right;
+}
+
+.noResultsRow td {
+    padding: 28px 12px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 13px;
+    font-style: italic;
+    white-space: normal;
+}
+
+.view-btn {
+    border: 1px solid #0f766e;
+    background: #ffffff;
+    color: #0f766e;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.view-btn:hover {
+    background: #0f766e;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(15, 118, 110, 0.3);
+}
+
+.view-btn:active {
+    transform: translateY(1px);
+}
+
+/* ============ RECEIPT PANEL ============ */
+.receiptPanel {
+    flex: 0 0 auto;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: sticky;
+    top: 24px;
+}
+
+.emptyState {
+    width: 100%;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    background: #ffffff;
+    padding: 46px 24px;
+    text-align: center;
+    color: #64748b;
+}
+
+.emptyState .emptyIcon {
+    font-size: 38px;
+    line-height: 1;
+    margin-bottom: 12px;
+}
+
+.emptyState p {
+    margin: 0 0 6px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #334155;
+}
+
+.emptyState span {
+    font-size: 12.5px;
+    line-height: 1.5;
+    display: block;
+}
+
+.receiptWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.receipt-actions {
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+}
+
+.print-btn {
+    border: none;
+    background: #0f766e;
+    color: #ffffff;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.print-btn:hover {
+    background: #115e59;
+    box-shadow: 0 6px 14px rgba(15, 118, 110, 0.28);
+}
+
+.print-btn:active {
+    transform: translateY(1px);
+}
+
+/* ============ THERMAL RECEIPT ============ */
+.receipt-container {
+    width: 100%;
+    max-width: 360px;
+    background: #ffffff;
+    padding: 20px 22px 24px;
+    border-radius: 8px;
+    box-shadow: 0 12px 34px rgba(15, 23, 42, 0.13);
+    font-family:
+        "Courier New", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    line-height: 1.45;
+    color: #111827;
+}
+
+.receipt-container p {
+    margin: 0;
+}
+
+/* --- shop header --- */
+.shopInfoContainer {
+    text-align: center;
+}
+
+.shopInfoContainer h1 {
+    font-family: "Great Vibes", cursive;
+    font-size: 32px;
+    font-weight: 400;
+    margin: 0 0 6px;
+    letter-spacing: 0.02em;
+}
+
+.shop-location,
+.shop-phone {
+    font-size: 11px;
+    color: #374151;
+}
+
+.shop-time {
+    margin-top: 6px !important;
+    font-size: 10.5px;
+    color: #6b7280;
+}
+
+/* --- order info --- */
+.orderInfoContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed #9ca3af;
+    font-size: 11px;
+}
+
+.orderInfoContainer>div {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.labelAndValue {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.labelAndValue span:first-child {
+    color: #6b7280;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.labelAndValue span:last-child {
+    font-weight: 700;
+    text-align: right;
+    word-break: break-word;
+}
+
+/* --- items table --- */
+.orderItemTable {
+    margin-top: 14px;
+}
+
+.order-item-list {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 11px;
+}
+
+.order-item-list th {
+    padding: 4px 0 6px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6b7280;
+    text-align: right;
+    border-bottom: 1px dashed #9ca3af;
+}
+
+.order-item-list th:nth-child(1) {
+    width: 44%;
+    text-align: left;
+}
+
+.order-item-list th:nth-child(2) {
+    width: 12%;
+}
+
+.order-item-list th:nth-child(3) {
+    width: 22%;
+}
+
+.order-item-list th:nth-child(4) {
+    width: 22%;
+}
+
+.order-item-list td {
+    padding: 6px 0;
+    text-align: right;
+    vertical-align: top;
+    word-break: break-word;
+}
+
+.order-item-list td:first-child {
+    text-align: left;
+    padding-right: 8px;
+}
+
+.item-name {
+    display: block;
+    font-weight: 700;
+}
+
+.item-meta {
+    display: block;
+    font-size: 9.5px;
+    color: #6b7280;
+    letter-spacing: 0.02em;
+}
+
+/* --- rulers & totals --- */
+.ruler {
+    border-top: 1px dashed #9ca3af;
+    margin: 10px 0;
+}
+
+.totalAmount,
+.discountAmount,
+.taxAmount,
+.netAmount,
+.receivedAmount,
+.changeAmount {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 2px 0;
+}
+
+.total-title,
+.discount-title,
+.tax-title,
+.received-title {
+    color: #374151;
+}
+
+.netAmount {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid #111827;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.changeAmount {
+    font-size: 14px;
+    font-weight: 800;
+}
+
+/* --- footer --- */
+.receipt-footer {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 11px;
+    color: #374151;
+}
+
+.receipt-footer .thank-you {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px !important;
+}
+
+.receipt-footer .divider {
+    border-top: 1px dashed #9ca3af;
+    margin: 10px 0;
+}
+
+.receipt-footer .system-label {
+    margin-top: 6px !important;
+    font-size: 10px;
+    color: #9ca3af;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1180px) {
+    .receiptPageLayout {
+        flex-direction: column;
+    }
+
+    .receiptPanel {
+        width: 100%;
+        position: static;
+    }
+}
+
+@media (max-width: 620px) {
+    .receiptPageLayout {
+        padding: 14px;
+        gap: 16px;
+    }
+
+    .orderListPanel {
+        padding: 14px;
+    }
+}
+
+/* ============ PRINT ============ */
+@page {
+    margin: 10mm;
+}
+
+@media print {
+    body {
+        background: #ffffff;
+    }
+
+    .navContianer,
+    .orderListPanel,
+    .receipt-actions,
+    .emptyState {
+        display: none !important;
+    }
+
+    .screenLayout,
+    .receiptPageLayout,
+    .receiptPanel,
+    .receiptWrapper {
+        display: block !important;
+        width: auto !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        gap: 0 !important;
+        position: static !important;
+        background: none !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+    }
+
+    .receipt-container {
+        width: auto !important;
+        max-width: 320px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+}
+
+/* ============ PAGINATION ============ */
+.paginationBar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #eef2f7;
+}
+
+.paginationInfo {
+    font-size: 12.5px;
+    color: #64748b;
+}
+
+.paginationInfo strong {
+    color: #334155;
+    font-weight: 700;
+}
+
+.paginationControls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.pageSizeLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    color: #64748b;
+}
+
+.pageSizeSelect {
+    border: 1px solid #d8e0ea;
+    background: #fbfcfe;
+    border-radius: 7px;
+    padding: 5px 8px;
+    font-size: 12.5px;
+    font-family: inherit;
+    color: #1f2933;
+    cursor: pointer;
+    outline: none;
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.pageSizeSelect:focus {
+    border-color: #0f766e;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
+}
+
+.pageBtn {
+    border: 1px solid #d8e0ea;
+    background: #ffffff;
+    color: #475569;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.pageBtn:hover:not(:disabled) {
+    border-color: #0f766e;
+    color: #0f766e;
+    background: #f0fdfa;
+}
+
+.pageBtn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.pageNumbers {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pageNumberBtn {
+    min-width: 30px;
+    height: 30px;
+    padding: 0 8px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #475569;
+    font-size: 12.5px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.pageNumberBtn:hover {
+    border-color: #0f766e;
+    color: #0f766e;
+    background: #f0fdfa;
+}
+
+.pageNumberBtn.active {
+    background: #0f766e;
+    border-color: #0f766e;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(15, 118, 110, 0.25);
+}
+
+.pageEllipsis {
+    padding: 0 4px;
+    font-size: 12.5px;
+    color: #94a3b8;
+    user-select: none;
+}
+
+@media (max-width: 620px) {
+    .paginationBar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .paginationControls {
+        justify-content: space-between;
+    }
+}

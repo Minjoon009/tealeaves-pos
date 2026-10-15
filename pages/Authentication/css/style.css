@@ -1,0 +1,84 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+}
+
+#logo {
+    font-family: "Great Vibes", cursive;
+    color: #006241;
+}
+
+#formTitle {
+    margin-top: 1rem;
+
+}
+
+.loginForm {
+    height: fit-content;
+    width: fit-content;
+    padding: 5%;
+    background-color: rgb(236, 236, 236);
+    border-radius: 1rem;
+}
+
+.inputContainer>.label label {
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.inputContainer>.inputField input {
+    width: 100%;
+    padding: 0.5rem 0rem 0.5rem 0.5rem;
+    border-radius: 0.3rem;
+    border: 1px solid gray;
+    margin-top: 0.5rem;
+}
+
+.inputContainer {
+    margin-top: 1rem;
+}
+
+
+
+#btnLogin {
+    width: 100%;
+    height: 2rem;
+    margin-top: 1rem;
+    border-radius: 0.3rem;
+    border: 1px solid gray;
+    background-color: #006241;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+#btnLogin:hover {
+    background-color: #009362;
+    color: white;
+}
+
+#btnLoadData {
+    width: 100%;
+    height: 2rem;
+    margin-top: 1rem;
+    border-radius: 0.3rem;
+    border: 1px solid gray;
+    background-color: #a85d00;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+#btnLoadData:hover {
+    background-color: #c27a00;
+    color: white;
+}

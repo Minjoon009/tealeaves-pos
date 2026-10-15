@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="loginForm">
+      <h1 id="logo">Tea Leaves</h1>
+      <h2 id="formTitle">Enter your login credentials</h2>
+      <div class="dataFillField">
+        <div class="inputContainer">
+          <div class="label">
+            <label for="txtEmail">Email:</label>
+          </div>
+          <div class="inputField">
+            <input
+              type="email"
+              name="txtEmail"
+              id="txtEmail"
+              placeholder="example@mail.com"
+            />
+          </div>
+        </div>
+        <div class="inputContainer">
+          <div class="label">
+            <label for="txtPassword">Password:</label>
+          </div>
+          <div class="inputField">
+            <input type="password" name="txtPassword" id="txtPassword" />
+          </div>
+        </div>
+        <button id="btnLogin">Login</button>
+        <button id="btnLoadData">Load Data</button>
+      </div>
+    </div>
+    <!-- Script Part -->
+    <script src="./data/data.js"></script>
+    <script>
+      const email = document.getElementById("txtEmail");
+      const password = document.getElementById("txtPassword");
+      const btnLogin = document.getElementById("btnLogin");
+      const userData = JSON.parse(localStorage.getItem("userData")) ?? [];
+      btnLogin.addEventListener("click", () => {
+        const currentUser = userData.find(
+          (user) =>
+            user.email == email.value && user.password == password.value,
+        );
+        if (currentUser != null) {
+          localStorage.setItem("currentUser", JSON.stringify(currentUser));
+          if (currentUser.role == "admin") {
+            window.location = "../Admin/dashboard.html";
+          } else {
+            window.location = "../Cashier/home.html";
+          }
+        } else {
+          alert("Invalid credentials");
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,178 @@
+@font-face {
+    font-family: 'Great Vibes';
+    src: url('../assets//fonts/GreatVibes-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.screenLayout {
+    display: flex;
+    /* height: 100vh; */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    background-color: rgb(239, 239, 239);
+}
+
+/* Style For Navigation */
+#logo {
+    font-family: "Great Vibes", cursive;
+    color: #0b421a;
+    font-size: 1.7rem;
+    font-weight: 400;
+}
+
+.logoAndArrow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logoAndArrow>#arrow {
+    cursor: pointer;
+}
+
+.logoAndArrow>#arrow:hover {
+    color: rgb(72, 72, 72);
+}
+
+.screenLayout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ===== NAV CONTAINER (sidebar) ===== */
+.navContianer {
+    background-color: white;
+    width: 10rem;
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 1px solid #ececec;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.03);
+}
+
+nav {
+    margin-top: 2rem;
+    flex: 1 1 auto;
+    width: 100%;
+}
+
+nav>ul {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+nav>ul>li {
+    width: 100%;
+    padding: 0;
+    border-radius: 0.5rem;
+    transition: background-color 0.15s ease;
+}
+
+nav>ul>li>a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    text-decoration: none;
+    color: #2a2a2a;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+nav>ul>li:hover>a {
+    background-color: #f4efe9;
+    color: #362415;
+}
+
+nav>ul>.active {
+    background-color: #362415;
+}
+
+nav>ul>.active>a {
+    color: white;
+}
+
+nav>ul>.active:hover>a {
+    background-color: transparent;
+    color: white;
+}
+
+/* ===== LOGOUT BUTTON ===== */
+.logoutWrap {
+    width: 100%;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #ececec;
+}
+
+.logoutBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1px solid #e63946;
+    border-radius: 0.5rem;
+    background-color: transparent;
+    color: #e63946;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.18s ease, color 0.18s ease,
+        box-shadow 0.18s ease, transform 0.1s ease;
+}
+
+.logoutBtn:hover {
+    background-color: #e63946;
+    color: white;
+    box-shadow: 0 6px 14px rgba(230, 57, 70, 0.28);
+}
+
+.logoutBtn:active {
+    transform: translateY(1px);
+}
+
+.logoutBtn svg {
+    width: 15px;
+    height: 15px;
+    flex: 0 0 auto;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 720px) {
+    .navContianer {
+        padding: 1rem 0.75rem;
+    }
+
+    #logo {
+        font-size: 1.4rem;
+    }
+
+    nav>ul>li>a {
+        font-size: 0.9rem;
+        padding: 0.55rem 0.75rem;
+    }
+
+    .logoutBtn {
+        font-size: 0.88rem;
+        padding: 0.6rem 0.85rem;
+    }
+}

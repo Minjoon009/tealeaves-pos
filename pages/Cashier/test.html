@@ -1,0 +1,2054 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Request</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="./style/navStyle.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ============ BASE ============ */
+      * {
+        box-sizing: border-box;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          "Helvetica Neue",
+          Arial,
+          sans-serif;
+        background: #f4f6f8;
+        color: #1f2933;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .screenLayout {
+        display: flex;
+        align-items: stretch;
+        min-height: 100vh;
+      }
+
+      .requestPageLayout {
+        flex: 1 1 auto;
+        min-width: 0;
+        padding: 24px;
+      }
+
+      /* ============ PAGE HEADER ============ */
+      .pageHeader {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .pageHeader h2 {
+        margin: 0 0 2px;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+
+      .pageHeader .subtitle {
+        margin: 0;
+        font-size: 13px;
+        color: #64748b;
+      }
+
+      .newRequestBtn {
+        border: none;
+        background: #0f766e;
+        color: #ffffff;
+        font-size: 13.5px;
+        font-weight: 600;
+        padding: 11px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+        transition:
+          background-color 0.15s ease,
+          box-shadow 0.15s ease,
+          transform 0.1s ease;
+      }
+
+      .newRequestBtn:hover {
+        background: #115e59;
+        box-shadow: 0 8px 18px rgba(15, 118, 110, 0.32);
+      }
+
+      .newRequestBtn:active {
+        transform: translateY(1px);
+      }
+
+      .newRequestBtn .plus {
+        font-size: 17px;
+        line-height: 1;
+        font-weight: 400;
+      }
+
+      /* ============ FILTER TABS ============ */
+      .filterTabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+
+      .filterTab {
+        border: 1px solid #e2e8f0;
+        background: #ffffff;
+        color: #475569;
+        font-size: 12.5px;
+        font-weight: 600;
+        padding: 7px 15px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition:
+          background-color 0.15s ease,
+          color 0.15s ease,
+          border-color 0.15s ease,
+          box-shadow 0.15s ease;
+      }
+
+      .filterTab:hover {
+        border-color: #0f766e;
+        color: #0f766e;
+      }
+
+      .filterTab.active {
+        background: #0f766e;
+        border-color: #0f766e;
+        color: #ffffff;
+        box-shadow: 0 4px 10px rgba(15, 118, 110, 0.25);
+      }
+
+      .filterTab .count {
+        opacity: 0.75;
+        margin-left: 4px;
+        font-weight: 500;
+      }
+
+      /* ============ REQUEST CARDS ============ */
+      .requestList {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .requestCard {
+        background: #ffffff;
+        border: 1px solid #eef2f7;
+        border-radius: 12px;
+        padding: 16px 18px;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+        transition:
+          box-shadow 0.18s ease,
+          transform 0.18s ease,
+          border-color 0.18s ease;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 4px 16px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .requestCard::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: #cbd5e1;
+        border-radius: 0 4px 4px 0;
+      }
+
+      .requestCard.status-pending::before {
+        background: #facc15;
+      }
+      .requestCard.status-approved::before {
+        background: #16a34a;
+      }
+      .requestCard.status-processing::before {
+        background: #2563eb;
+      }
+      .requestCard.status-completed::before {
+        background: #0d9488;
+      }
+      .requestCard.status-rejected::before {
+        background: #dc2626;
+      }
+
+      .requestCard:hover {
+        border-color: #d8e3ee;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.09);
+        transform: translateY(-1px);
+      }
+
+      .requestCard .reqId {
+        font-family: "Courier New", ui-monospace, monospace;
+        font-size: 12.5px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: #0f766e;
+      }
+
+      .requestCard .reqTitle {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1f2933;
+        margin: 2px 0 6px;
+        grid-column: 1;
+      }
+
+      .requestCard .reqMeta {
+        grid-column: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 14px;
+        font-size: 12.5px;
+        color: #475569;
+      }
+
+      .requestCard .reqMeta .metaItem {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .requestCard .reqMeta .metaItem .k {
+        color: #94a3b8;
+      }
+
+      .requestCard .reqMeta .metaItem .v {
+        font-weight: 600;
+        color: #334155;
+      }
+
+      .requestCard .reqReason {
+        grid-column: 1;
+        margin-top: 8px;
+        font-size: 12px;
+        color: #64748b;
+        font-style: italic;
+        padding-left: 10px;
+        border-left: 2px solid #e2e8f0;
+      }
+
+      .requestCard .reqFooter {
+        grid-column: 1 / -1;
+        margin-top: 10px;
+        padding-top: 8px;
+        border-top: 1px dashed #eef2f7;
+        font-size: 11px;
+        color: #94a3b8;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      /* ============ STATUS BADGE ============ */
+      .statusBadge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11.5px;
+        font-weight: 700;
+        padding: 5px 12px;
+        border-radius: 999px;
+        white-space: nowrap;
+        align-self: start;
+        grid-row: 1 / span 2;
+        grid-column: 2;
+        letter-spacing: 0.02em;
+      }
+
+      .statusBadge .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        flex: 0 0 auto;
+      }
+
+      .status-pending .statusBadge {
+        background: #fef9c3;
+        color: #854d0e;
+      }
+      .status-pending .statusBadge .dot {
+        background: #facc15;
+      }
+
+      .status-approved .statusBadge {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .status-approved .statusBadge .dot {
+        background: #16a34a;
+      }
+
+      .status-processing .statusBadge {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+      .status-processing .statusBadge .dot {
+        background: #2563eb;
+      }
+
+      .status-completed .statusBadge {
+        background: #ccfbf1;
+        color: #115e59;
+      }
+      .status-completed .statusBadge .dot {
+        background: #0d9488;
+      }
+
+      .status-rejected .statusBadge {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .status-rejected .statusBadge .dot {
+        background: #dc2626;
+      }
+
+      /* ============ EMPTY STATE ============ */
+      .emptyRequests {
+        background: #ffffff;
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+        padding: 46px 24px;
+        text-align: center;
+        color: #64748b;
+      }
+
+      .emptyRequests .emptyIcon {
+        font-size: 38px;
+        line-height: 1;
+        margin-bottom: 12px;
+      }
+
+      .emptyRequests p {
+        margin: 0 0 6px;
+        font-size: 15px;
+        font-weight: 700;
+        color: #334155;
+      }
+
+      .emptyRequests span {
+        font-size: 12.5px;
+        line-height: 1.5;
+        display: block;
+      }
+
+      /* ============ MODAL ============ */
+      .modalOverlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.55);
+        backdrop-filter: blur(3px);
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 40px 16px;
+        overflow-y: auto;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.18s ease;
+        z-index: 100;
+      }
+
+      .modalOverlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modalDialog {
+        background: #ffffff;
+        border-radius: 14px;
+        width: 100%;
+        max-width: 520px;
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+        transform: translateY(10px) scale(0.98);
+        transition: transform 0.2s ease;
+        overflow: hidden;
+      }
+
+      .modalOverlay.open .modalDialog {
+        transform: translateY(0) scale(1);
+      }
+
+      .modalHead {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 22px 14px;
+        border-bottom: 1px solid #eef2f7;
+      }
+
+      .modalHead h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: #0f172a;
+      }
+
+      .modalCloseBtn {
+        border: none;
+        background: transparent;
+        font-size: 22px;
+        line-height: 1;
+        color: #94a3b8;
+        cursor: pointer;
+        padding: 2px 6px;
+        border-radius: 6px;
+        transition:
+          background-color 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .modalCloseBtn:hover {
+        background: #f1f5f9;
+        color: #334155;
+      }
+
+      .modalBody {
+        padding: 20px 22px 4px;
+      }
+
+      /* --- form --- */
+      .formGroup {
+        margin-bottom: 16px;
+      }
+
+      .formGroup > label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #475569;
+        margin-bottom: 7px;
+      }
+
+      .formGroup .requiredMark {
+        color: #dc2626;
+        margin-left: 3px;
+      }
+
+      .field {
+        width: 100%;
+        border: 1px solid #d8e0ea;
+        background: #fbfcfe;
+        border-radius: 9px;
+        padding: 11px 13px;
+        font-size: 13.5px;
+        font-family: inherit;
+        color: #1f2933;
+        outline: none;
+        transition:
+          border-color 0.15s ease,
+          box-shadow 0.15s ease,
+          background-color 0.15s ease;
+      }
+
+      .field:focus {
+        border-color: #0f766e;
+        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
+      }
+
+      textarea.field {
+        resize: vertical;
+        min-height: 76px;
+        line-height: 1.5;
+      }
+
+      select.field {
+        appearance: none;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
+        padding-right: 36px;
+        cursor: pointer;
+      }
+
+      /* ---------- COMBOBOX (searchable product select) ---------- */
+      .combobox {
+        position: relative;
+      }
+
+      .combobox-input {
+        padding-right: 42px;
+        cursor: text;
+      }
+
+      .combobox-input::placeholder {
+        color: #94a3b8;
+      }
+
+      .combobox-toggle {
+        position: absolute;
+        right: 4px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 0;
+        background: transparent;
+        color: #94a3b8;
+        font-size: 12px;
+        line-height: 1;
+        padding: 9px 11px;
+        cursor: pointer;
+        border-radius: 7px;
+        transition:
+          background-color 0.15s ease,
+          color 0.15s ease;
+      }
+
+      .combobox-toggle:hover {
+        background: #f1f5f9;
+        color: #334155;
+      }
+
+      .combobox-list {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        right: 0;
+        max-height: 240px;
+        overflow-y: auto;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.16);
+        list-style: none;
+        margin: 0;
+        padding: 6px;
+        z-index: 30;
+      }
+
+      .combobox-list li {
+        padding: 9px 11px;
+        border-radius: 7px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: #1f2933;
+        transition: background-color 0.12s ease;
+      }
+
+      .combobox-list li:hover,
+      .combobox-list li.highlighted {
+        background: #f0fdfa;
+      }
+
+      .combobox-list li .opt-main {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+      }
+
+      .combobox-list li .opt-name {
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .combobox-list li .opt-sku {
+        font-size: 11px;
+        color: #94a3b8;
+        font-family: "Courier New", ui-monospace, monospace;
+      }
+
+      .combobox-list li .opt-stock {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: #f1f5f9;
+        color: #475569;
+        white-space: nowrap;
+      }
+
+      .combobox-list li .opt-stock.low {
+        background: #fee2e2;
+        color: #b91c1c;
+      }
+
+      .combobox-list li .opt-stock.ok {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .combobox-empty {
+        padding: 14px 10px;
+        text-align: center;
+        color: #94a3b8;
+        font-size: 12.5px;
+        cursor: default;
+      }
+
+      .combobox-empty:hover {
+        background: transparent !important;
+      }
+
+      /* --- current stock chip --- */
+      .stockChip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 10px;
+        padding: 8px 13px;
+        border-radius: 9px;
+        background: #f1f5f9;
+        font-size: 12.5px;
+        color: #334155;
+      }
+
+      .stockChip .k {
+        color: #64748b;
+      }
+
+      .stockChip .v {
+        font-weight: 800;
+        font-size: 14px;
+      }
+
+      .stockChip .v.low {
+        color: #dc2626;
+      }
+
+      .stockChip .v.ok {
+        color: #16a34a;
+      }
+
+      .inputWithSuffix {
+        position: relative;
+      }
+
+      .inputWithSuffix .field {
+        padding-right: 52px;
+      }
+
+      .inputWithSuffix .suffix {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12px;
+        font-weight: 700;
+        color: #94a3b8;
+        pointer-events: none;
+      }
+
+      .fieldHint {
+        margin-top: 6px;
+        font-size: 11.5px;
+        color: #94a3b8;
+        line-height: 1.45;
+      }
+
+      /* --- request type toggle --- */
+      .typeToggle {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .typeOption {
+        position: relative;
+        cursor: pointer;
+        display: block;
+      }
+
+      .typeOption input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .typeCard {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 14px 10px;
+        border: 2px solid #e2e8f0;
+        border-radius: 11px;
+        background: #fbfcfe;
+        text-align: center;
+        transition:
+          border-color 0.15s ease,
+          background-color 0.15s ease,
+          box-shadow 0.15s ease;
+      }
+
+      .typeCard .typeIcon {
+        font-size: 22px;
+        line-height: 1;
+      }
+
+      .typeCard .typeLabel {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: #1f2933;
+      }
+
+      .typeCard .typeHint {
+        font-size: 11px;
+        color: #94a3b8;
+      }
+
+      .typeOption input:checked + .typeCard {
+        border-color: #0f766e;
+        background: #f0fdfa;
+        box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
+      }
+
+      .typeOption input:focus-visible + .typeCard {
+        box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.35);
+      }
+
+      /* --- form actions --- */
+      .formActions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 16px 22px 20px;
+        border-top: 1px solid #eef2f7;
+        margin-top: 12px;
+      }
+
+      .btn {
+        border-radius: 9px;
+        font-size: 13.5px;
+        font-weight: 600;
+        padding: 11px 20px;
+        cursor: pointer;
+        transition:
+          background-color 0.15s ease,
+          color 0.15s ease,
+          box-shadow 0.15s ease,
+          border-color 0.15s ease,
+          transform 0.1s ease;
+      }
+
+      .btn:active {
+        transform: translateY(1px);
+      }
+
+      .btn-secondary {
+        background: #ffffff;
+        border: 1px solid #d8e0ea;
+        color: #475569;
+      }
+
+      .btn-secondary:hover {
+        border-color: #94a3b8;
+        color: #1f2933;
+        background: #f8fafc;
+      }
+
+      .btn-primary {
+        background: #0f766e;
+        border: 1px solid #0f766e;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+      }
+
+      .btn-primary:hover {
+        background: #115e59;
+        border-color: #115e59;
+        box-shadow: 0 8px 18px rgba(15, 118, 110, 0.32);
+      }
+
+      /* --- validation --- */
+      .field.invalid {
+        border-color: #dc2626;
+        background: #fef2f2;
+      }
+
+      .field.invalid:focus {
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+      }
+
+      .errorText {
+        color: #dc2626;
+        font-size: 11.5px;
+        margin-top: 5px;
+        display: block;
+      }
+
+      /* ============ SUCCESS VIEW ============ */
+      .successView {
+        padding: 34px 26px 30px;
+        text-align: center;
+      }
+
+      .successIcon {
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        background: #dcfce7;
+        color: #16a34a;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        animation: pop 0.35s ease;
+      }
+
+      @keyframes pop {
+        0% {
+          transform: scale(0.6);
+          opacity: 0;
+        }
+        60% {
+          transform: scale(1.08);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .successView h3 {
+        margin: 0 0 8px;
+        font-size: 19px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .successView .successSub {
+        margin: 0 0 22px;
+        font-size: 13px;
+        color: #64748b;
+      }
+
+      .successDetails {
+        display: inline-block;
+        text-align: left;
+        background: #f8fafc;
+        border: 1px solid #eef2f7;
+        border-radius: 11px;
+        padding: 16px 20px;
+        margin-bottom: 22px;
+        min-width: 240px;
+      }
+
+      .successDetails .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 5px 0;
+        font-size: 13px;
+      }
+
+      .successDetails .row .k {
+        color: #64748b;
+      }
+
+      .successDetails .row .v {
+        font-weight: 700;
+        color: #1f2933;
+        font-family: "Courier New", ui-monospace, monospace;
+      }
+
+      .successNote {
+        font-size: 12px;
+        color: #94a3b8;
+        margin-top: 14px;
+      }
+
+      /* ============ RESPONSIVE ============ */
+      @media (max-width: 720px) {
+        .requestPageLayout {
+          padding: 16px;
+        }
+
+        .pageHeader {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .newRequestBtn {
+          justify-content: center;
+        }
+
+        .typeToggle {
+          grid-template-columns: 1fr;
+        }
+
+        .requestCard {
+          grid-template-columns: 1fr;
+        }
+
+        .statusBadge {
+          grid-row: auto;
+          grid-column: 1;
+          justify-self: start;
+          margin-top: 4px;
+        }
+
+        .formActions {
+          flex-direction: column-reverse;
+        }
+
+        .formActions .btn {
+          width: 100%;
+        }
+      }
+
+      /* ============ PRINT ============ */
+      @media print {
+        .navContianer,
+        .newRequestBtn,
+        .filterTabs,
+        .modalOverlay {
+          display: none !important;
+        }
+
+        body {
+          background: #ffffff;
+        }
+
+        .requestPageLayout {
+          padding: 0;
+        }
+
+        .requestCard {
+          box-shadow: none;
+          border: 1px solid #e2e8f0;
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="screenLayout">
+      <!-- ================= NAV BAR (same as receipt.html) ================= -->
+      <div class="navContianer">
+        <div class="logoAndArrow">
+          <h1 id="logo">Tea Leaves</h1>
+          <!-- <div id="arrow">&lt;&lt;</div> -->
+        </div>
+        <nav>
+          <ul>
+            <li><a href="./home.html">🛒 &nbsp;View</a></li>
+            <li class="active">
+              <a href="./requestProduct.html">📦 &nbsp;Request</a>
+            </li>
+            <li><a href="./receipt.html">📃 &nbsp;Receipt</a></li>
+            <li><a href="./history.html">📜 &nbsp;History</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- ================= CONTENT ================= -->
+      <div class="requestPageLayout">
+        <!-- ---------- Page header ---------- -->
+        <div class="pageHeader">
+          <div>
+            <h2>Request Dashboard</h2>
+            <p class="subtitle">Send stock and product needs to Admin.</p>
+          </div>
+
+          <button class="newRequestBtn" id="newRequestBtn" type="button">
+            <span class="plus">+</span> New Request
+          </button>
+        </div>
+
+        <!-- ---------- Filter tabs ---------- -->
+        <div class="filterTabs" id="filterTabs">
+          <button class="filterTab active" data-filter="all" type="button">
+            All <span class="count" data-count="all">0</span>
+          </button>
+          <button class="filterTab" data-filter="pending" type="button">
+            🟡 Pending <span class="count" data-count="pending">0</span>
+          </button>
+          <button class="filterTab" data-filter="approved" type="button">
+            🟢 Approved <span class="count" data-count="approved">0</span>
+          </button>
+          <button class="filterTab" data-filter="processing" type="button">
+            🔵 Processing <span class="count" data-count="processing">0</span>
+          </button>
+          <button class="filterTab" data-filter="completed" type="button">
+            ✓ Completed <span class="count" data-count="completed">0</span>
+          </button>
+          <button class="filterTab" data-filter="rejected" type="button">
+            🔴 Rejected <span class="count" data-count="rejected">0</span>
+          </button>
+        </div>
+
+        <!-- ---------- Requests list ---------- -->
+        <div class="requestList" id="requestList"></div>
+      </div>
+    </div>
+
+    <!-- ================= NEW REQUEST MODAL ================= -->
+    <div class="modalOverlay" id="modalOverlay" aria-hidden="true">
+      <div
+        class="modalDialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+      >
+        <!-- --- FORM VIEW --- -->
+        <div id="modalFormView">
+          <div class="modalHead">
+            <h3 id="modalTitle">Create Request</h3>
+            <button
+              class="modalCloseBtn"
+              id="modalCloseBtn"
+              type="button"
+              aria-label="Close"
+            >
+              &times;
+            </button>
+          </div>
+
+          <form id="requestForm" novalidate>
+            <div class="modalBody">
+              <!-- Request type -->
+              <div class="formGroup">
+                <label>Request Type</label>
+                <div class="typeToggle">
+                  <label class="typeOption">
+                    <input
+                      type="radio"
+                      name="requestType"
+                      value="add-stock"
+                      checked
+                    />
+                    <span class="typeCard">
+                      <span class="typeIcon">📦</span>
+                      <span class="typeLabel">Add Stock</span>
+                      <span class="typeHint">Existing product</span>
+                    </span>
+                  </label>
+
+                  <label class="typeOption">
+                    <input
+                      type="radio"
+                      name="requestType"
+                      value="new-product"
+                    />
+                    <span class="typeCard">
+                      <span class="typeIcon">✨</span>
+                      <span class="typeLabel">New Product</span>
+                      <span class="typeHint">Not in catalog yet</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- ===== ADD STOCK FIELDS ===== -->
+              <div id="addStockFields">
+                <div class="formGroup">
+                  <label for="productInput">
+                    Product <span class="requiredMark">*</span>
+                  </label>
+
+                  <!-- Searchable combobox -->
+                  <div class="combobox" id="productCombobox">
+                    <input
+                      type="text"
+                      id="productInput"
+                      class="field combobox-input"
+                      placeholder="Type to search product…"
+                      autocomplete="off"
+                      role="combobox"
+                      aria-expanded="false"
+                      aria-autocomplete="list"
+                      aria-controls="productSuggestions"
+                    />
+                    <button
+                      type="button"
+                      class="combobox-toggle"
+                      id="comboboxToggle"
+                      aria-label="Toggle product list"
+                      tabindex="-1"
+                    >
+                      ▾
+                    </button>
+                    <ul
+                      class="combobox-list"
+                      id="productSuggestions"
+                      role="listbox"
+                      hidden
+                    ></ul>
+                  </div>
+
+                  <div class="stockChip" id="currentStockChip" hidden>
+                    <span class="k">Current Stock:</span>
+                    <span class="v" id="currentStockValue">0</span>
+                  </div>
+                </div>
+
+                <div class="formGroup">
+                  <label for="stockQty">
+                    Requested Quantity <span class="requiredMark">*</span>
+                  </label>
+                  <input
+                    class="field"
+                    type="number"
+                    id="stockQty"
+                    min="1"
+                    step="1"
+                    value="50"
+                    placeholder="50"
+                    required
+                  />
+                </div>
+
+                <div class="formGroup">
+                  <label for="stockReason">Reason</label>
+                  <textarea
+                    class="field"
+                    id="stockReason"
+                    placeholder="Stock is almost finished"
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- ===== NEW PRODUCT FIELDS ===== -->
+              <div id="newProductFields" hidden>
+                <div class="formGroup">
+                  <label for="newProductName">
+                    Product Name <span class="requiredMark">*</span>
+                  </label>
+                  <input
+                    class="field"
+                    type="text"
+                    id="newProductName"
+                    placeholder="Chocolate Bar"
+                    required
+                  />
+                </div>
+
+                <div class="formGroup">
+                  <label for="newProductCategory">Category</label>
+                  <select class="field" id="newProductCategory">
+                    <option value="Beverages">Beverages</option>
+                    <option value="Food">Food</option>
+                    <option value="Snacks" selected>Snacks</option>
+                    <option value="Desserts">Desserts</option>
+                    <option value="Others">Others</option>
+                  </select>
+                </div>
+
+                <div class="formGroup">
+                  <label for="newProductPrice">Suggested Price</label>
+                  <div class="inputWithSuffix">
+                    <input
+                      class="field"
+                      type="number"
+                      id="newProductPrice"
+                      min="0"
+                      step="50"
+                      placeholder="1500"
+                    />
+                    <span class="suffix">Ks</span>
+                  </div>
+                </div>
+
+                <div class="formGroup">
+                  <label for="newProductQty">
+                    Requested Quantity <span class="requiredMark">*</span>
+                  </label>
+                  <input
+                    class="field"
+                    type="number"
+                    id="newProductQty"
+                    min="1"
+                    step="1"
+                    value="20"
+                    placeholder="20"
+                    required
+                  />
+                </div>
+
+                <div class="formGroup">
+                  <label for="newProductReason">Reason</label>
+                  <textarea
+                    class="field"
+                    id="newProductReason"
+                    placeholder="Customers frequently ask for this product"
+                  ></textarea>
+                  <p class="fieldHint">Admin will review the request.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="formActions">
+              <button class="btn btn-secondary" id="cancelBtn" type="button">
+                Cancel
+              </button>
+              <button class="btn btn-primary" type="submit">
+                Submit Request
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- --- SUCCESS VIEW --- -->
+        <div id="modalSuccessView" hidden>
+          <div class="successView">
+            <div class="successIcon">✓</div>
+            <h3>Request Submitted</h3>
+            <p class="successSub">
+              Your request has been sent to Admin for review.
+            </p>
+
+            <div class="successDetails">
+              <div class="row">
+                <span class="k">Request ID</span>
+                <span class="v" id="successReqId">—</span>
+              </div>
+              <div class="row">
+                <span class="k">Type</span>
+                <span class="v" id="successReqType">—</span>
+              </div>
+              <div class="row">
+                <span class="k">Product</span>
+                <span class="v" id="successReqProduct">—</span>
+              </div>
+              <div class="row">
+                <span class="k">Quantity</span>
+                <span class="v" id="successReqQty">—</span>
+              </div>
+              <div class="row">
+                <span class="k">Status</span>
+                <span class="v" id="successReqStatus">Pending</span>
+              </div>
+            </div>
+
+            <div>
+              <button class="btn btn-primary" id="successDoneBtn" type="button">
+                Done
+              </button>
+            </div>
+
+            <p class="successNote">
+              You can track this request on the dashboard.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /* ============================================================
+         PRODUCT CATALOG (used for the searchable product input)
+         Falls back to a demo list if localStorage has no productData
+         ============================================================ */
+      const FALLBACK_CATALOG = [
+        {
+          sku: "BEV-001",
+          name: "Coca Cola 330ml",
+          category: "Beverages",
+          price: 800,
+          stock: 3,
+        },
+        {
+          sku: "BEV-002",
+          name: "Pepsi 330ml",
+          category: "Beverages",
+          price: 800,
+          stock: 24,
+        },
+        {
+          sku: "BEV-003",
+          name: "Iced Lemon Tea",
+          category: "Beverages",
+          price: 1200,
+          stock: 11,
+        },
+        {
+          sku: "FOD-001",
+          name: "Chicken Burger",
+          category: "Food",
+          price: 4500,
+          stock: 12,
+        },
+        {
+          sku: "FOD-002",
+          name: "Cheese Sandwich",
+          category: "Food",
+          price: 3500,
+          stock: 5,
+        },
+        {
+          sku: "SNK-001",
+          name: "Potato Chips",
+          category: "Snacks",
+          price: 1200,
+          stock: 8,
+        },
+        {
+          sku: "SNK-002",
+          name: "Roasted Peanuts",
+          category: "Snacks",
+          price: 900,
+          stock: 2,
+        },
+        {
+          sku: "DES-001",
+          name: "Chocolate Muffin",
+          category: "Desserts",
+          price: 1800,
+          stock: 6,
+        },
+      ];
+
+      let productCatalog = [];
+      try {
+        const stored = JSON.parse(localStorage.getItem("productData"));
+        productCatalog =
+          Array.isArray(stored) && stored.length ? stored : FALLBACK_CATALOG;
+      } catch (err) {
+        console.warn("Could not read productData:", err);
+        productCatalog = FALLBACK_CATALOG;
+      }
+
+      /* ============================================================
+         STATUS CONFIG
+         ============================================================ */
+      const STATUS = {
+        pending: { label: "Pending", icon: "🟡" },
+        approved: { label: "Approved", icon: "🟢" },
+        processing: { label: "Processing", icon: "🔵" },
+        completed: { label: "Completed", icon: "✓" },
+        rejected: { label: "Rejected", icon: "🔴" },
+      };
+
+      /* ============================================================
+         STORAGE
+         ============================================================ */
+      const STORAGE_KEY = "stockRequests";
+
+      function loadRequests() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          const parsed = raw ? JSON.parse(raw) : null;
+          if (Array.isArray(parsed) && parsed.length) return parsed;
+        } catch (err) {
+          console.warn("Could not read stockRequests:", err);
+        }
+
+        // Seed demo data on first visit
+        return [
+          {
+            id: "REQ-001",
+            type: "add-stock",
+            productName: "Coca Cola 330ml",
+            sku: "BEV-001",
+            category: "Beverages",
+            quantity: 50,
+            reason: "Stock is almost finished",
+            status: "pending",
+            createdAt: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
+          },
+          {
+            id: "REQ-002",
+            type: "new-product",
+            productName: "Chocolate Bar",
+            sku: null,
+            category: "Snacks",
+            price: 1500,
+            quantity: 20,
+            reason: "Customers frequently ask for this product",
+            status: "approved",
+            createdAt: new Date(Date.now() - 1000 * 60 * 60 * 26).toISOString(),
+          },
+        ];
+      }
+
+      function saveRequests() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(requests));
+        } catch (err) {
+          console.warn("Could not save stockRequests:", err);
+        }
+      }
+
+      /* ============================================================
+         HELPERS
+         ============================================================ */
+      const esc = (str) =>
+        String(str == null ? "" : str).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+
+      const formatDateTime = (iso) => {
+        const d = new Date(iso);
+        if (isNaN(d)) return "—";
+        return (
+          d.toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }) +
+          ", " +
+          d.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          })
+        );
+      };
+
+      const formatNumber = (n) => Number(n || 0).toLocaleString("en-US");
+
+      /** Next available REQ-### id */
+      function nextRequestId() {
+        let max = 0;
+        requests.forEach((r) => {
+          const m = /^REQ-(\d+)$/.exec(r.id || "");
+          if (m) max = Math.max(max, parseInt(m[1], 10));
+        });
+        return "REQ-" + String(max + 1).padStart(3, "0");
+      }
+
+      /* ============================================================
+         STATE
+         ============================================================ */
+      let requests = loadRequests();
+      let currentFilter = "all";
+
+      /** Product currently selected via the combobox (or null) */
+      let selectedProduct = null;
+      /** Index of the highlighted suggestion (or -1) */
+      let highlightedIndex = -1;
+      /** Products currently rendered in the suggestion list */
+      let visibleSuggestions = [];
+
+      /* ============================================================
+         DOM REFS
+         ============================================================ */
+      const requestListEl = document.getElementById("requestList");
+      const filterTabsEl = document.getElementById("filterTabs");
+
+      const newRequestBtn = document.getElementById("newRequestBtn");
+      const modalOverlay = document.getElementById("modalOverlay");
+      const modalCloseBtn = document.getElementById("modalCloseBtn");
+      const cancelBtn = document.getElementById("cancelBtn");
+
+      const modalFormView = document.getElementById("modalFormView");
+      const modalSuccessView = document.getElementById("modalSuccessView");
+      const requestForm = document.getElementById("requestForm");
+
+      const addStockFields = document.getElementById("addStockFields");
+      const newProductFields = document.getElementById("newProductFields");
+
+      /* ----- combobox refs ----- */
+      const productCombobox = document.getElementById("productCombobox");
+      const productInput = document.getElementById("productInput");
+      const productSuggestions = document.getElementById("productSuggestions");
+      const comboboxToggle = document.getElementById("comboboxToggle");
+
+      const currentStockChip = document.getElementById("currentStockChip");
+      const currentStockValue = document.getElementById("currentStockValue");
+      const stockQty = document.getElementById("stockQty");
+      const stockReason = document.getElementById("stockReason");
+
+      const newProductName = document.getElementById("newProductName");
+      const newProductCategory = document.getElementById("newProductCategory");
+      const newProductPrice = document.getElementById("newProductPrice");
+      const newProductQty = document.getElementById("newProductQty");
+      const newProductReason = document.getElementById("newProductReason");
+
+      const successReqId = document.getElementById("successReqId");
+      const successReqType = document.getElementById("successReqType");
+      const successReqProduct = document.getElementById("successReqProduct");
+      const successReqQty = document.getElementById("successReqQty");
+      const successReqStatus = document.getElementById("successReqStatus");
+      const successDoneBtn = document.getElementById("successDoneBtn");
+
+      /* ============================================================
+         RENDER — REQUEST CARDS
+         ============================================================ */
+      function renderRequests() {
+        const filtered =
+          currentFilter === "all"
+            ? requests
+            : requests.filter((r) => r.status === currentFilter);
+
+        // Update tab counters (always based on the full list)
+        document.querySelectorAll(".filterTab .count").forEach((el) => {
+          const key = el.dataset.count;
+          el.textContent =
+            key === "all"
+              ? requests.length
+              : requests.filter((r) => r.status === key).length;
+        });
+
+        if (!filtered.length) {
+          requestListEl.innerHTML = `
+            <div class="emptyRequests">
+              <div class="emptyIcon">📭</div>
+              <p>${
+                requests.length
+                  ? "No requests with this status"
+                  : "No requests yet"
+              }</p>
+              <span>${
+                requests.length
+                  ? "Try another filter to see more requests."
+                  : "Click <strong>+ New Request</strong> to send your first stock or product request to Admin."
+              }</span>
+            </div>
+          `;
+          return;
+        }
+
+        requestListEl.innerHTML = filtered
+          .map((r) => {
+            const st = STATUS[r.status] || STATUS.pending;
+            const isAddStock = r.type === "add-stock";
+
+            const title = isAddStock
+              ? esc(r.productName)
+              : `New Product: ${esc(r.productName)}`;
+
+            const typeLabel = isAddStock ? "Add Stock" : "New Product";
+
+            const metaParts = [
+              `<span class="metaItem"><span class="k">${typeLabel}</span></span>`,
+              `<span class="metaItem"><span class="k">Qty:</span> <span class="v">${formatNumber(
+                r.quantity,
+              )}</span></span>`,
+            ];
+
+            if (r.sku) {
+              metaParts.push(
+                `<span class="metaItem"><span class="k">SKU:</span> <span class="v">${esc(
+                  r.sku,
+                )}</span></span>`,
+              );
+            }
+
+            if (!isAddStock && r.price) {
+              metaParts.push(
+                `<span class="metaItem"><span class="k">Price:</span> <span class="v">${formatNumber(
+                  r.price,
+                )} Ks</span></span>`,
+              );
+            }
+
+            if (!isAddStock && r.category) {
+              metaParts.push(
+                `<span class="metaItem"><span class="k">Category:</span> <span class="v">${esc(
+                  r.category,
+                )}</span></span>`,
+              );
+            }
+
+            const reasonHtml = r.reason
+              ? `<div class="reqReason">“${esc(r.reason)}”</div>`
+              : "";
+
+            return `
+              <article class="requestCard status-${r.status}">
+                <span class="reqId">${esc(r.id)}</span>
+                <span class="statusBadge">
+                  <span class="dot"></span>${st.icon} ${st.label}
+                </span>
+
+                <h4 class="reqTitle">${title}</h4>
+
+                <div class="reqMeta">${metaParts.join("")}</div>
+                ${reasonHtml}
+
+                <div class="reqFooter">
+                  <span>Requested ${formatDateTime(r.createdAt)}</span>
+                  <span>By Cashier 01</span>
+                </div>
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      /* ============================================================
+         FILTER TABS
+         ============================================================ */
+      filterTabsEl.addEventListener("click", (e) => {
+        const tab = e.target.closest(".filterTab");
+        if (!tab) return;
+
+        currentFilter = tab.dataset.filter;
+
+        filterTabsEl
+          .querySelectorAll(".filterTab")
+          .forEach((t) => t.classList.toggle("active", t === tab));
+
+        renderRequests();
+      });
+
+      /* ============================================================
+         MODAL — OPEN / CLOSE / RESET
+         ============================================================ */
+      function openModal() {
+        resetForm();
+        modalFormView.hidden = false;
+        modalSuccessView.hidden = true;
+        modalOverlay.classList.add("open");
+        modalOverlay.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+
+        // Focus first meaningful field
+        setTimeout(() => {
+          const type = requestForm.querySelector(
+            'input[name="requestType"]:checked',
+          ).value;
+          (type === "add-stock" ? productInput : newProductName).focus();
+        }, 60);
+      }
+
+      function closeModal() {
+        closeSuggestions();
+        modalOverlay.classList.remove("open");
+        modalOverlay.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+      }
+
+      function resetForm() {
+        requestForm.reset();
+
+        // Default type = add-stock
+        const addStockRadio = requestForm.querySelector(
+          'input[name="requestType"][value="add-stock"]',
+        );
+        if (addStockRadio) addStockRadio.checked = true;
+
+        addStockFields.hidden = false;
+        newProductFields.hidden = true;
+
+        // Clear combobox state
+        selectedProduct = null;
+        highlightedIndex = -1;
+        productInput.value = "";
+        closeSuggestions();
+
+        currentStockChip.hidden = true;
+        currentStockValue.textContent = "0";
+        currentStockValue.classList.remove("low", "ok");
+
+        // Clear validation styles
+        requestForm
+          .querySelectorAll(".field.invalid")
+          .forEach((el) => el.classList.remove("invalid"));
+        requestForm.querySelectorAll(".errorText").forEach((el) => el.remove());
+
+        // Sensible defaults
+        stockQty.value = "50";
+        newProductQty.value = "20";
+        newProductPrice.value = "";
+        newProductName.value = "";
+        stockReason.value = "";
+        newProductReason.value = "";
+      }
+
+      newRequestBtn.addEventListener("click", openModal);
+      modalCloseBtn.addEventListener("click", closeModal);
+      cancelBtn.addEventListener("click", closeModal);
+      successDoneBtn.addEventListener("click", closeModal);
+
+      // Click outside dialog closes it
+      modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) closeModal();
+      });
+
+      // Esc closes modal
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modalOverlay.classList.contains("open")) {
+          if (!productSuggestions.hidden) {
+            closeSuggestions();
+          } else {
+            closeModal();
+          }
+        }
+      });
+
+      /* ============================================================
+         TYPE TOGGLE (Add Stock / New Product)
+         ============================================================ */
+      requestForm
+        .querySelectorAll('input[name="requestType"]')
+        .forEach((radio) => {
+          radio.addEventListener("change", () => {
+            const isAddStock = radio.value === "add-stock" && radio.checked;
+            addStockFields.hidden = !isAddStock;
+            newProductFields.hidden = isAddStock;
+
+            if (!isAddStock) closeSuggestions();
+
+            // Clear any previous validation errors when switching type
+            requestForm
+              .querySelectorAll(".field.invalid")
+              .forEach((el) => el.classList.remove("invalid"));
+            requestForm
+              .querySelectorAll(".errorText")
+              .forEach((el) => el.remove());
+          });
+        });
+
+      /* ============================================================
+         COMBOBOX — SEARCHABLE PRODUCT INPUT
+         ============================================================ */
+      function openSuggestions() {
+        renderSuggestions(productInput.value);
+        productSuggestions.hidden = false;
+        productInput.setAttribute("aria-expanded", "true");
+      }
+
+      function closeSuggestions() {
+        productSuggestions.hidden = true;
+        productInput.setAttribute("aria-expanded", "false");
+        highlightedIndex = -1;
+        visibleSuggestions = [];
+      }
+
+      function renderSuggestions(query) {
+        const q = String(query || "")
+          .trim()
+          .toLowerCase();
+
+        visibleSuggestions = productCatalog.filter((p) => {
+          if (!q) return true;
+          return (
+            String(p.name || "")
+              .toLowerCase()
+              .includes(q) ||
+            String(p.sku || "")
+              .toLowerCase()
+              .includes(q) ||
+            String(p.category || "")
+              .toLowerCase()
+              .includes(q)
+          );
+        });
+
+        if (!visibleSuggestions.length) {
+          productSuggestions.innerHTML =
+            '<li class="combobox-empty">No products found</li>';
+          highlightedIndex = -1;
+          return;
+        }
+
+        productSuggestions.innerHTML = visibleSuggestions
+          .map((p, i) => {
+            const stockClass = Number(p.stock) <= 5 ? "low" : "ok";
+            return `
+              <li role="option" data-sku="${esc(p.sku)}" data-index="${i}">
+                <span class="opt-main">
+                  <span class="opt-name">${esc(p.name)}</span>
+                  <span class="opt-sku">${esc(p.sku)} • ${esc(p.category || "")}</span>
+                </span>
+                <span class="opt-stock ${stockClass}">Stock ${formatNumber(
+                  p.stock,
+                )}</span>
+              </li>
+            `;
+          })
+          .join("");
+
+        highlightedIndex = 0;
+        highlightItem(0);
+      }
+
+      function highlightItem(index) {
+        const items = productSuggestions.querySelectorAll("li[data-sku]");
+        items.forEach((li, i) =>
+          li.classList.toggle("highlighted", i === index),
+        );
+        if (items[index]) {
+          items[index].scrollIntoView({ block: "nearest" });
+        }
+      }
+
+      function selectProduct(product) {
+        if (!product) return;
+
+        selectedProduct = product;
+        productInput.value = `${product.name} (${product.sku})`;
+        productInput.classList.remove("invalid");
+
+        // Remove any error text attached to the combobox / formGroup
+        const group = productInput.closest(".formGroup");
+        if (group) {
+          const err = group.querySelector(".errorText");
+          if (err) err.remove();
+        }
+
+        closeSuggestions();
+        showStockChip(product);
+      }
+
+      function showStockChip(product) {
+        currentStockChip.hidden = false;
+        currentStockValue.textContent = formatNumber(product.stock);
+        currentStockValue.classList.toggle("low", Number(product.stock) <= 5);
+        currentStockValue.classList.toggle("ok", Number(product.stock) > 5);
+      }
+
+      /* ---------- combobox events ---------- */
+      productInput.addEventListener("focus", () => {
+        openSuggestions();
+      });
+
+      productInput.addEventListener("input", () => {
+        // User is typing → the previous selection is no longer valid
+        selectedProduct = null;
+        currentStockChip.hidden = true;
+        openSuggestions();
+        renderSuggestions(productInput.value);
+      });
+
+      productInput.addEventListener("keydown", (e) => {
+        // Open the list on ArrowDown / ArrowUp when it's closed
+        if (
+          productSuggestions.hidden &&
+          (e.key === "ArrowDown" || e.key === "ArrowUp")
+        ) {
+          e.preventDefault();
+          openSuggestions();
+          return;
+        }
+
+        const items = productSuggestions.querySelectorAll("li[data-sku]");
+        if (!items.length) return;
+
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          highlightedIndex = (highlightedIndex + 1) % items.length;
+          highlightItem(highlightedIndex);
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          highlightedIndex =
+            (highlightedIndex - 1 + items.length) % items.length;
+          highlightItem(highlightedIndex);
+        } else if (e.key === "Enter") {
+          if (highlightedIndex >= 0 && items[highlightedIndex]) {
+            e.preventDefault();
+            const sku = items[highlightedIndex].dataset.sku;
+            const product = productCatalog.find((p) => p.sku === sku);
+            selectProduct(product);
+          }
+        } else if (e.key === "Escape") {
+          e.preventDefault();
+          closeSuggestions();
+        } else if (e.key === "Tab") {
+          closeSuggestions();
+        }
+      });
+
+      // Use mousedown so the selection happens before blur closes the list
+      productSuggestions.addEventListener("mousedown", (e) => {
+        const li = e.target.closest("li[data-sku]");
+        if (!li) return;
+        e.preventDefault();
+        const product = productCatalog.find((p) => p.sku === li.dataset.sku);
+        selectProduct(product);
+      });
+
+      // Close when clicking outside the combobox
+      document.addEventListener("mousedown", (e) => {
+        if (!productCombobox.contains(e.target)) {
+          closeSuggestions();
+        }
+      });
+
+      // Toggle button
+      comboboxToggle.addEventListener("mousedown", (e) => {
+        // Prevent the "click outside" handler from firing first
+        e.preventDefault();
+      });
+
+      comboboxToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (productSuggestions.hidden) {
+          productInput.focus();
+          openSuggestions();
+        } else {
+          closeSuggestions();
+        }
+      });
+
+      /* ============================================================
+         VALIDATION HELPERS
+         ============================================================ */
+      function setInvalid(field, message) {
+        field.classList.add("invalid");
+        const group = field.closest(".formGroup") || field.parentElement;
+        let err = group.querySelector(".errorText");
+        if (!err) {
+          err = document.createElement("span");
+          err.className = "errorText";
+          group.appendChild(err);
+        }
+        err.textContent = message;
+      }
+
+      function clearInvalid(field) {
+        field.classList.remove("invalid");
+        const group = field.closest(".formGroup") || field.parentElement;
+        const err = group.querySelector(".errorText");
+        if (err) err.remove();
+      }
+
+      /* ============================================================
+         FORM SUBMIT
+         ============================================================ */
+      requestForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const type = requestForm.querySelector(
+          'input[name="requestType"]:checked',
+        ).value;
+
+        /* ---------- ADD STOCK ---------- */
+        if (type === "add-stock") {
+          let ok = true;
+
+          if (!selectedProduct) {
+            setInvalid(productInput, "Please select a product.");
+            ok = false;
+          } else {
+            clearInvalid(productInput);
+          }
+
+          const qty = parseInt(stockQty.value, 10);
+          if (!Number.isFinite(qty) || qty < 1) {
+            setInvalid(stockQty, "Enter a quantity of 1 or more.");
+            ok = false;
+          } else {
+            clearInvalid(stockQty);
+          }
+
+          if (!ok) return;
+
+          const req = {
+            id: nextRequestId(),
+            type: "add-stock",
+            productName: selectedProduct.name,
+            sku: selectedProduct.sku,
+            category: selectedProduct.category,
+            quantity: qty,
+            reason: stockReason.value.trim(),
+            status: "pending",
+            createdAt: new Date().toISOString(),
+          };
+
+          requests.unshift(req);
+          saveRequests();
+          showSuccess(req);
+          renderRequests();
+          return;
+        }
+
+        /* ---------- NEW PRODUCT ---------- */
+        {
+          let ok = true;
+
+          const name = newProductName.value.trim();
+          if (!name) {
+            setInvalid(newProductName, "Enter the product name.");
+            ok = false;
+          } else {
+            clearInvalid(newProductName);
+          }
+
+          const qty = parseInt(newProductQty.value, 10);
+          if (!Number.isFinite(qty) || qty < 1) {
+            setInvalid(newProductQty, "Enter a quantity of 1 or more.");
+            ok = false;
+          } else {
+            clearInvalid(newProductQty);
+          }
+
+          if (!ok) return;
+
+          const price = parseInt(newProductPrice.value, 10);
+
+          const req = {
+            id: nextRequestId(),
+            type: "new-product",
+            productName: name,
+            sku: null,
+            category: newProductCategory.value,
+            price: Number.isFinite(price) && price >= 0 ? price : null,
+            quantity: qty,
+            reason: newProductReason.value.trim(),
+            status: "pending",
+            createdAt: new Date().toISOString(),
+          };
+
+          requests.unshift(req);
+          saveRequests();
+          showSuccess(req);
+          renderRequests();
+        }
+      });
+
+      /* ============================================================
+         SUCCESS VIEW
+         ============================================================ */
+      function showSuccess(req) {
+        successReqId.textContent = req.id;
+        successReqType.textContent =
+          req.type === "add-stock" ? "Add Stock" : "New Product";
+        successReqProduct.textContent = req.productName;
+        successReqQty.textContent = formatNumber(req.quantity);
+        successReqStatus.textContent = "Pending";
+
+        modalFormView.hidden = true;
+        modalSuccessView.hidden = false;
+      }
+
+      /* ============================================================
+         INIT
+         ============================================================ */
+      renderRequests();
+    </script>
+  </body>
+</html>

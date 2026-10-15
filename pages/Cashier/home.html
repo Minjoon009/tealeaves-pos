@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="./style/navStyle.css" />
+    <link rel="stylesheet" href="./style/style.css" />
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    /> -->
+  </head>
+  <body>
+    <div class="screenLayout">
+      <div class="navContianer">
+        <div class="logoAndArrow">
+          <h1 id="logo">Tea Leaves</h1>
+          <!-- <div id="arrow">&lt;&lt;</div> -->
+        </div>
+
+        <nav>
+          <ul>
+            <li class="active"><a href="./home.html">🛒 &nbsp;View</a></li>
+            <li><a href="./requestProduct.html">📦 &nbsp;Request</a></li>
+            <li><a href="./receipt.html">📃 &nbsp;Receipt</a></li>
+            <li><a href="./history.html">📜 &nbsp;History</a></li>
+          </ul>
+        </nav>
+
+        <div class="logoutWrap">
+          <button class="logoutBtn" type="button" id="logoutBtn">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Log Out
+          </button>
+        </div>
+      </div>
+      <div class="productScreen">
+        <!-- <div class="searchContainer">
+          <p>Here will appear search features.</p>
+        </div> -->
+        <div class="product-grid"></div>
+      </div>
+      <div class="orderSummaryContainer">
+        <div class="orderId">
+          <div>Order Summary</div>
+        </div>
+        <div class="orderList"></div>
+        <div class="costViewContainer">
+          <div class="costContainer">
+            <div class="subtotalContainer">
+              <p class="lblSubtotal">Subtotal</p>
+              <p id="subtotal">$0</p>
+            </div>
+            <div class="taxContainer">
+              <p class="lblTax">Taxes</p>
+              <p id="taxAmount">$0</p>
+            </div>
+            <div class="discountContainer">
+              <p class="lblDiscount">Discount</p>
+              <p id="discountAmount">-$0</p>
+            </div>
+            <div class="totalContainer">
+              <p class="lblTotal">Total Payment</p>
+              <p id="totalAmount">$0</p>
+            </div>
+            <div class="receivedContainer">
+              <p class="lblReceived">Received</p>
+              <input type="number" id="txtReceived" value="0" />
+            </div>
+            <div class="changeContainer">
+              <p class="lblChange">Change</p>
+              <p id="changeAmount">$0</p>
+            </div>
+            <div class="btnConfirmContainer">
+              <button id="btnConfirm" onclick="confirmPayment()">
+                Confirm Payment
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../Authentication/auth.js"></script>
+    <script>
+      const productGrid = document.getElementsByClassName("product-grid")[0];
+      const orderList = document.getElementsByClassName("orderList")[0];
+      var currentOrder = [];
+      function renderProductCard(
+        index,
+        image,
+        category,
+        name,
+        sku,
+        price,
+        stock,
+      ) {
+        return `
+                  <div class="product-card">
+                        <div class="product-image">
+                          <img
+                            src="${image}"
+                            alt="${name}"
+                          />
+
+                          <span class="stock-badge"> Stock ${stock} </span>
+                        </div>
+
+                        <div class="product-content">
+                          <div class="category">${category}</div>
+
+                          <div class="product-name">${name}</div>
+
+                          <div class="product-code">SKU: ${sku}</div>
+
+                          <div class="product-bottom">
+                            <div class="price">$${price}</div>
+
+                            <button class="add-btn" ${stock == 0 ? "disabled" : ""} onclick="addOrderItem(${index},'${image}','${category}','${name}','${sku}',${price},${stock})">+</button>
+                          </div>
+                        </div>
+                      </div>
+                  `;
+      }
+      function loadProductData() {
+        const products = JSON.parse(localStorage.getItem("productData"));
+        productGrid.innerHTML = "";
+        if (products.length != 0) {
+          products.forEach((product, index) => {
+            productGrid.innerHTML += renderProductCard(
+              index,
+              product.image,
+              product.category,
+              product.name,
+              product.sku,
+              product.price,
+              product.stock,
+            );
+          });
+        }
+      }
+      function updateProductData(orderList) {
+        const productData = JSON.parse(localStorage.getItem("productData"));
+        orderList.forEach((item) => {
+          if (productData.length != 0) {
+            let index = productData.findIndex(
+              (product) => product.sku == item.sku,
+            );
+            productData[index].stock -= item.qty;
+          }
+        });
+        localStorage.setItem("productData", JSON.stringify(productData));
+      }
+      function renderOrderItem(image, name, qty, category, price, sku) {
+        return `<div class="orderItem">
+                        <div class="imageContainer">
+                          <img
+                            src="${image}"
+                            alt="${name}"
+                          />
+                        </div>
+                        <div class="itemContent">
+                          <div class="orderItemDetail">
+                            <span class="itemName">${name}</span>
+                            <span class="stock" id="qty-${sku}">(${qty})</span>
+                            <p class="orderCategory">${category}</p>
+                          </div>
+                          <div class="orderItemBottom">
+                            <p class="itemPrice">$${price}</p>
+                            <div class="orderModify">
+                              <div class="editItem" onclick=""></div>
+                              <div class="deleteItem" onclick="deleteOrderItem('${sku}')">🗑️</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>`;
+      }
+      function addOrderItem(index, image, category, name, sku, price, stock) {
+        const isExist = currentOrder.find((item) => item.sku == sku);
+        // console.log(isExist);
+        if (stock == 0) {
+          console.log("Out of stock.");
+          return;
+        }
+        if (isExist != undefined) {
+          const currentIndex = currentOrder.findIndex(
+            (item) => item.sku == sku,
+          );
+          if (currentOrder[currentIndex].qty == stock) {
+            return;
+          }
+          currentOrder[currentIndex].qty += 1;
+          renderOrderQty(sku, currentOrder[currentIndex].qty);
+          // console.log("Product Already Exist");
+          // console.log(currentOrder);
+        } else {
+          orderList.innerHTML += renderOrderItem(
+            image,
+            name,
+            1,
+            category,
+            price,
+            sku,
+          );
+          currentOrder.push({
+            image: image,
+            name: name,
+            qty: 1,
+            category: category,
+            price: price,
+            sku: sku,
+          });
+        }
+        renderCost(currentOrder);
+      }
+      function deleteOrderItem(sku) {
+        const orderList = document.getElementsByClassName("orderList")[0];
+        const currentIndex = currentOrder.findIndex((item) => item.sku == sku);
+        currentOrder.splice(currentIndex, 1);
+        orderList.innerHTML = "";
+        currentOrder.forEach((item) => {
+          orderList.innerHTML += renderOrderItem(
+            item.image,
+            item.name,
+            item.qty,
+            item.category,
+            item.price,
+            item.sku,
+          );
+        });
+
+        renderCost(currentOrder);
+        if (currentOrder.length == 0) {
+          clearCost();
+          return;
+        }
+        calculateChange();
+      }
+      function removeCurrentOrderData() {
+        currentOrder = [];
+      }
+      function renderOrderQty(sku, qty) {
+        const item = document.getElementById(`qty-${sku}`);
+        item.innerText = `(${qty})`;
+      }
+      function renderCost(currentOrder) {
+        const subTotal = document.getElementById("subtotal");
+        const tax = document.getElementById("taxAmount");
+        const discount = document.getElementById("discountAmount");
+        const totalPayment = document.getElementById("totalAmount");
+        const change = document.getElementById("changeAmount");
+        let subTotalValue = 0;
+        currentOrder.forEach((item) => {
+          subTotalValue += item.price * item.qty;
+        });
+        subTotal.innerText = `$${subTotalValue}`;
+        const taxValue = (subTotalValue * 7) / 100;
+        tax.innerText = `$${taxValue}`;
+        totalPayment.innerText = `$${subTotalValue + taxValue}`;
+      }
+      function clearCost() {
+        const subTotal = document.getElementById("subtotal");
+        const tax = document.getElementById("taxAmount");
+        const discount = document.getElementById("discountAmount");
+        const totalPayment = document.getElementById("totalAmount");
+        const change = document.getElementById("changeAmount");
+        const receivedInput = document.getElementById("txtReceived");
+        subTotal.innerText = "$0";
+        tax.innerText = "$0";
+        discount.innerText = "$0";
+        totalPayment.innerText = "$0";
+        change.innerText = "$0";
+        receivedInput.value = "";
+      }
+      function confirmPayment() {
+        const subTotal = document.getElementById("subtotal");
+        const tax = document.getElementById("taxAmount");
+        const discount = document.getElementById("discountAmount");
+        const totalPayment = document.getElementById("totalAmount");
+        const receivedInput = document.getElementById("txtReceived");
+        const change = document.getElementById("changeAmount");
+        const isCashPayment = true;
+
+        if (currentOrder.length != 0) {
+          if (receivedInput.value == 0 && isCashPayment == true) {
+            showError(
+              "./assets/cross-sign.png",
+              "Insufficient Received Amount",
+              "Please check the received amount.",
+              "Confirm",
+            );
+            return;
+          }
+          showConfirmation(
+            "./assets/question-mark-sign.png",
+            "Are you sure to confirm payment.",
+            "This action cannot be undone.",
+            "Confirm",
+          ).then((confirmed) => {
+            if (confirmed) {
+              const orderData = {
+                id: generateOrderID(),
+                cashier: "Cashier 01",
+                date: new Date(),
+                products: currentOrder,
+                discount: Number(discount.innerText.replace("-$", "").trim()), // Fixed discount in MMK
+                taxRate: 0.07, // 5% tax applied after discount; set to 0 if no tax
+                received: receivedInput.value, // Amount received from the customer in MMK
+              };
+              let orderDataFromDB = JSON.parse(
+                localStorage.getItem("orderData"),
+              );
+              orderDataFromDB.push(orderData);
+              localStorage.setItem(
+                "orderData",
+                JSON.stringify(orderDataFromDB),
+              );
+            }
+            clearCost();
+            orderList.innerHTML = "";
+            updateProductData(currentOrder);
+            loadProductData();
+            removeCurrentOrderData();
+          });
+        } else {
+          showError(
+            "./assets/cross-sign.png",
+            "Please Add Item First",
+            "Please check the order items.",
+            "Confirm",
+          );
+        }
+      }
+
+      const receivedInput = document.getElementById("txtReceived");
+      function calculateChange() {
+        const receivedAmount = Number(receivedInput.value);
+
+        const totalPayment = Number(
+          document
+            .getElementById("totalAmount")
+            .innerText.replace("$", "")
+            .trim(),
+        );
+
+        if (
+          receivedInput.value.trim() === "" ||
+          !Number.isFinite(receivedAmount) ||
+          receivedAmount < totalPayment
+        ) {
+          return false;
+        }
+
+        const change = document.getElementById("changeAmount");
+        change.innerText = `$${(receivedAmount - totalPayment).toFixed(2)}`;
+      }
+
+      receivedInput.addEventListener("keydown", (e) => {
+        if (["e", "E", "+", "-"].includes(e.key)) {
+          e.preventDefault();
+          return;
+        }
+
+        if (e.key === "Enter") {
+          e.preventDefault();
+          const receivedAmount = Number(receivedInput.value);
+          const isSufficient = calculateChange();
+          if (isSufficient == false) {
+            showError(
+              "./assets/cross-sign.png",
+              "Insufficient Received Amount",
+              "Please check the received amount.",
+              "Confirm",
+            );
+          }
+        }
+      });
+
+      function showError(imgLink, title, description, buttonTitle) {
+        // Prevent multiple popups
+        if (document.getElementById("overlayContainer")) {
+          return;
+        }
+
+        const popUpBox = `
+                <div id="overlayContainer">
+                  <div>
+                    <img src="${imgLink}" alt="cross-sign" />
+                    <h1 id="error-title">${title}</h1>
+                    <p>${description}</p>
+                    <button onclick="hideError()">${buttonTitle}</button>
+                  </div>
+                </div>
+              `;
+
+        document.body.insertAdjacentHTML("beforeend", popUpBox);
+      }
+      function showConfirmation(
+        imgLink,
+        title,
+        description,
+        buttonTitle,
+        cancelTitle = "Cancel",
+      ) {
+        // Prevent multiple popups
+        if (document.getElementById("overlayContainer")) {
+          return Promise.resolve(false);
+        }
+
+        return new Promise((resolve) => {
+          const overlay = document.createElement("div");
+          overlay.id = "overlayContainer";
+          overlay.setAttribute("role", "alertdialog");
+          overlay.setAttribute("aria-modal", "true");
+          overlay.style.cssText = `
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    `;
+
+          const box = document.createElement("div");
+          box.style.cssText = `
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 32px 28px 24px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      box-sizing: border-box;
+    `;
+
+          const img = document.createElement("img");
+          img.src = imgLink;
+          img.alt = "";
+          img.style.cssText = "width: 56px; height: 56px; margin-bottom: 12px;";
+
+          const h1 = document.createElement("h1");
+          h1.id = "confirm-title";
+          h1.textContent = title;
+          h1.style.cssText = `
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0 0 10px;
+    `;
+
+          const p = document.createElement("p");
+          p.textContent = description;
+          p.style.cssText = `
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.5;
+      margin: 0 0 24px;
+    `;
+
+          // Wrapper for side-by-side buttons
+          const btnRow = document.createElement("div");
+          btnRow.style.cssText = `
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    `;
+
+          const confirmBtn = document.createElement("button");
+          confirmBtn.id = "confirm-btn";
+          confirmBtn.textContent = buttonTitle;
+          confirmBtn.style.cssText = `
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      min-width: 96px;
+      background: #19bf37;
+      color: #fff;
+    `;
+
+          const cancelBtn = document.createElement("button");
+          cancelBtn.id = "cancel-btn";
+          cancelBtn.textContent = cancelTitle;
+          cancelBtn.style.cssText = `
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      min-width: 96px;
+      background: #f0f0f0;
+      color: #333;
+    `;
+
+          // Hover effects
+          confirmBtn.addEventListener(
+            "mouseenter",
+            () => (confirmBtn.style.background = "#149c2d"),
+          );
+          confirmBtn.addEventListener(
+            "mouseleave",
+            () => (confirmBtn.style.background = "#19bf37"),
+          );
+          cancelBtn.addEventListener(
+            "mouseenter",
+            () => (cancelBtn.style.background = "#e0e0e0"),
+          );
+          cancelBtn.addEventListener(
+            "mouseleave",
+            () => (cancelBtn.style.background = "#f0f0f0"),
+          );
+
+          // Assemble
+          btnRow.appendChild(confirmBtn);
+          btnRow.appendChild(cancelBtn);
+
+          box.appendChild(img);
+          box.appendChild(h1);
+          box.appendChild(p);
+          box.appendChild(btnRow); // 👈 buttons wrapper instead of the buttons directly
+
+          overlay.appendChild(box);
+          document.body.appendChild(overlay);
+
+          confirmBtn.focus();
+
+          const cleanup = (result) => {
+            overlay.remove();
+            document.removeEventListener("keydown", onKey);
+            resolve(result);
+          };
+
+          const onKey = (e) => {
+            if (e.key === "Escape") cleanup(false);
+            if (e.key === "Enter") cleanup(true);
+          };
+
+          confirmBtn.addEventListener("click", () => cleanup(true));
+          cancelBtn.addEventListener("click", () => cleanup(false));
+          document.addEventListener("keydown", onKey);
+
+          // Click outside to cancel
+          overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) cleanup(false);
+          });
+        });
+      }
+
+      function hideError() {
+        document.getElementById("overlayContainer")?.remove();
+      }
+
+      function generateOrderID() {
+        const now = new Date();
+
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const day = String(now.getDate()).padStart(2, "0");
+        const hour = String(now.getHours()).padStart(2, "0");
+        const minute = String(now.getMinutes()).padStart(2, "0");
+        const second = String(now.getSeconds()).padStart(2, "0");
+        const millisecond = String(now.getMilliseconds()).padStart(3, "0");
+
+        return `#C01-ORD${year}${month}${day}${hour}${minute}${second}${millisecond}`;
+      }
+      const btnLogout = document.getElementById("logoutBtn");
+      btnLogout.addEventListener("click", () => {
+        localStorage.removeItem("currentUser");
+        window.location.href = "/";
+      });
+      loadProductData();
+    </script>
+  </body>
+</html>

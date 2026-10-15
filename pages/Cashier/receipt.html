@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Receipt</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="./style/navStyle.css" />
+    <link rel="stylesheet" href="./style/receiptStyle.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="screenLayout">
+      <!-- ================= NAV BAR ================= -->
+      <div class="navContianer">
+        <div class="logoAndArrow">
+          <h1 id="logo">Tea Leaves</h1>
+          <!-- <div id="arrow">&lt;&lt;</div> -->
+        </div>
+
+        <nav>
+          <ul>
+            <li><a href="./home.html">🛒 &nbsp;View</a></li>
+            <li><a href="./requestProduct.html">📦 &nbsp;Request</a></li>
+            <li class="active">
+              <a href="./receipt.html">📃 &nbsp;Receipt</a>
+            </li>
+            <li><a href="./history.html">📜 &nbsp;History</a></li>
+          </ul>
+        </nav>
+
+        <div class="logoutWrap">
+          <button class="logoutBtn" type="button" id="logoutBtn">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Log Out
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= CONTENT ================= -->
+      <div class="receiptPageLayout">
+        <!-- ---------- Order list ---------- -->
+        <section class="orderListPanel" aria-label="Order list">
+          <div class="panelHeader">
+            <h2>Order List</h2>
+            <span class="orderCount" id="orderCount">0 orders</span>
+          </div>
+
+          <!-- ===== SEARCH / FILTER ===== -->
+          <div class="searchRow">
+            <div class="searchBox">
+              <span class="searchIcon" aria-hidden="true">🔍</span>
+              <input
+                type="search"
+                id="orderSearch"
+                class="searchInput"
+                placeholder="Search by order no, date, SKU or product name…"
+                autocomplete="off"
+                aria-label="Search orders"
+              />
+              <button
+                type="button"
+                class="clearSearchBtn"
+                id="clearSearchBtn"
+                hidden
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+
+          <div class="tableWrap">
+            <table class="orderTable">
+              <thead>
+                <tr>
+                  <th>Order No.</th>
+                  <th>Cashier</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Items</th>
+                  <th>Net Amount</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="orderTableBody"></tbody>
+            </table>
+          </div>
+
+          <!-- ===== PAGINATION ===== -->
+          <div class="paginationBar" id="paginationBar">
+            <div class="paginationInfo" id="paginationInfo">Showing 0 of 0</div>
+
+            <div class="paginationControls">
+              <label class="pageSizeLabel">
+                Show
+                <select
+                  id="pageSizeSelect"
+                  class="pageSizeSelect"
+                  aria-label="Rows per page"
+                >
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </label>
+
+              <button class="pageBtn" id="prevPageBtn" type="button">
+                ‹ Prev
+              </button>
+
+              <div class="pageNumbers" id="pageNumbers"></div>
+
+              <button class="pageBtn" id="nextPageBtn" type="button">
+                Next ›
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------- Receipt (hidden until "View" is clicked) ---------- -->
+        <aside class="receiptPanel" aria-label="Receipt preview">
+          <div class="emptyState" id="receiptEmpty">
+            <div class="emptyIcon">🧾</div>
+            <p>No receipt selected</p>
+            <span
+              >Click <strong>View</strong> on an order to preview its receipt
+              here.</span
+            >
+          </div>
+
+          <div class="receiptWrapper" id="receiptWrapper" hidden>
+            <div class="receipt-actions">
+              <button class="print-btn" id="printBtn" type="button">
+                Print Receipt
+              </button>
+            </div>
+
+            <main class="receipt-container">
+              <header class="shopInfoContainer">
+                <h1>Tea Leaves</h1>
+                <p class="shop-location">
+                  No. 17-29, Bagayar Road,<br />Sanchaung Township
+                </p>
+                <p class="shop-phone">
+                  Ph: 09-775 330 034, 779 829 159,<br />973 465 852
+                </p>
+                <p class="shop-time">Open Daily: 8:00 AM – 7:00 PM</p>
+              </header>
+
+              <section
+                class="orderInfoContainer"
+                aria-label="Order information"
+              >
+                <div>
+                  <div class="labelAndValue">
+                    <span>ORDER NO.</span><span id="order-id">—</span>
+                  </div>
+                  <div class="labelAndValue">
+                    <span>CASHIER</span><span id="cashier-no">—</span>
+                  </div>
+                </div>
+                <div>
+                  <div class="labelAndValue">
+                    <span>DATE</span><span id="order-date">—</span>
+                  </div>
+                  <div class="labelAndValue">
+                    <span>TIME</span><span id="order-time">—</span>
+                  </div>
+                </div>
+              </section>
+
+              <section class="orderItemTable" aria-label="Order items">
+                <table class="order-item-list">
+                  <thead>
+                    <tr>
+                      <th>Description</th>
+                      <th>Qty</th>
+                      <th>Price</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody id="receipt-items"></tbody>
+                </table>
+
+                <div class="ruler"></div>
+
+                <div class="totalAmount">
+                  <p class="total-title">
+                    Subtotal (<span id="totalQty">0</span> items)
+                  </p>
+                  <p id="totalAmount-value">0 MMK</p>
+                </div>
+                <div class="discountAmount">
+                  <p class="discount-title">Discount</p>
+                  <p id="discountAmount-value">0 MMK</p>
+                </div>
+                <div class="taxAmount">
+                  <p class="tax-title">Tax</p>
+                  <p id="taxAmount-value">0 MMK</p>
+                </div>
+                <div class="netAmount">
+                  <p class="net-title">NET AMOUNT</p>
+                  <p id="netAmount-value">0 MMK</p>
+                </div>
+                <div class="receivedAmount">
+                  <p class="received-title">Received</p>
+                  <p id="receivedAmount-value">0 MMK</p>
+                </div>
+
+                <div class="ruler"></div>
+
+                <div class="changeAmount">
+                  <p class="change-title">CHANGE</p>
+                  <p id="changeAmount-value">0 MMK</p>
+                </div>
+              </section>
+
+              <footer class="receipt-footer">
+                <p class="thank-you">Thank You for Visiting!</p>
+                <p>We appreciate your support.</p>
+                <p>Please visit us again.</p>
+                <div class="divider"></div>
+                <p>Please keep this receipt for your records.</p>
+              </footer>
+            </main>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <script src="../Authentication/auth.js"></script>
+    <script>
+      /* ===================== ORDER DATA ===================== */
+      let orderData = [];
+      try {
+        orderData = JSON.parse(localStorage.getItem("orderData")) || [];
+      } catch (err) {
+        console.warn("Could not read orderData from localStorage:", err);
+      }
+      if (!Array.isArray(orderData)) orderData = [];
+
+      /* ===================== HELPERS ===================== */
+      const money = (value) =>
+        Number(value || 0).toLocaleString("en-US") + " MMK";
+
+      const esc = (str) =>
+        String(str == null ? "" : str).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+
+      function calcTotals(order) {
+        const subtotal = order.products.reduce(
+          (sum, p) => sum + p.qty * p.price,
+          0,
+        );
+        const totalQty = order.products.reduce((sum, p) => sum + p.qty, 0);
+        const discount = Number(order.discount) || 0;
+        const taxRate = Number(order.taxRate) || 0;
+        const tax = Math.round((subtotal - discount) * taxRate);
+        const net = subtotal - discount + tax;
+        const received = Number(order.received) || 0;
+        const change = received - net;
+
+        return { subtotal, totalQty, discount, tax, net, received, change };
+      }
+
+      function formatDate(iso) {
+        const d = new Date(iso);
+        if (isNaN(d)) return "—";
+        return d.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+      }
+
+      function formatTime(iso) {
+        const d = new Date(iso);
+        if (isNaN(d)) return "—";
+        return d.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        });
+      }
+
+      /* ===================== SEARCH / FILTER STATE ===================== */
+      let currentTerm = "";
+      let activeOrderIndex = -1;
+
+      /* ===================== PAGINATION STATE ===================== */
+      let currentPage = 1;
+      let pageSize = 10;
+
+      const normalize = (value) =>
+        String(value == null ? "" : value)
+          .replace(/\s+/g, " ")
+          .trim()
+          .toLowerCase();
+
+      function buildSearchIndex(order) {
+        const parts = [order.id, order.cashier, order.date];
+
+        const d = new Date(order.date);
+        if (!isNaN(d)) {
+          const yyyy = d.getFullYear();
+          const mm = String(d.getMonth() + 1).padStart(2, "0");
+          const dd = String(d.getDate()).padStart(2, "0");
+
+          parts.push(
+            `${yyyy}-${mm}-${dd}`,
+            `${dd}/${mm}/${yyyy}`,
+            `${dd}-${mm}-${yyyy}`,
+            `${dd}.${mm}.${yyyy}`,
+            formatDate(order.date),
+            formatTime(order.date),
+            d.toLocaleDateString("en-US", { month: "long" }),
+            d.toLocaleDateString("en-US", { month: "short" }),
+            d.toLocaleDateString("en-US", { weekday: "long" }),
+            d.toLocaleDateString("en-US", { weekday: "short" }),
+          );
+        }
+
+        (order.products || []).forEach((p) => {
+          parts.push(p.name, p.sku, p.category);
+        });
+
+        return normalize(parts.filter(Boolean).join(" | "));
+      }
+
+      function getVisibleOrders() {
+        const tokens = normalize(currentTerm).split(" ").filter(Boolean);
+
+        return orderData
+          .map((order, index) => ({ order, index }))
+          .filter(({ order }) => {
+            if (!tokens.length) return true;
+            const haystack = buildSearchIndex(order);
+            return tokens.every((token) => haystack.includes(token));
+          });
+      }
+
+      /* ===================== DOM REFS ===================== */
+      const orderTableBody = document.getElementById("orderTableBody");
+      const orderCountEl = document.getElementById("orderCount");
+      const searchInput = document.getElementById("orderSearch");
+      const clearSearchBtn = document.getElementById("clearSearchBtn");
+
+      const paginationInfo = document.getElementById("paginationInfo");
+      const pageSizeSelect = document.getElementById("pageSizeSelect");
+      const prevPageBtn = document.getElementById("prevPageBtn");
+      const nextPageBtn = document.getElementById("nextPageBtn");
+      const pageNumbersEl = document.getElementById("pageNumbers");
+
+      const receiptEmpty = document.getElementById("receiptEmpty");
+      const receiptWrapper = document.getElementById("receiptWrapper");
+
+      const elOrderId = document.getElementById("order-id");
+      const elCashier = document.getElementById("cashier-no");
+      const elDate = document.getElementById("order-date");
+      const elTime = document.getElementById("order-time");
+      const elItems = document.getElementById("receipt-items");
+
+      const elTotalQty = document.getElementById("totalQty");
+      const elSubtotal = document.getElementById("totalAmount-value");
+      const elDiscount = document.getElementById("discountAmount-value");
+      const elTax = document.getElementById("taxAmount-value");
+      const elNet = document.getElementById("netAmount-value");
+      const elReceived = document.getElementById("receivedAmount-value");
+      const elChange = document.getElementById("changeAmount-value");
+
+      const printBtn = document.getElementById("printBtn");
+
+      /* ===================== ORDER COUNT (top-right) ===================== */
+      function updateOrderCount(shown) {
+        const total = orderData.length;
+
+        if (!total) {
+          orderCountEl.textContent = "0 orders";
+        } else if (currentTerm) {
+          orderCountEl.textContent = `${shown} of ${total} order${
+            total === 1 ? "" : "s"
+          }`;
+        } else {
+          orderCountEl.textContent = `${total} order${total === 1 ? "" : "s"}`;
+        }
+      }
+
+      /* ===================== ACTIVE ROW HIGHLIGHT ===================== */
+      function applyActiveRow() {
+        orderTableBody.querySelectorAll("tr[data-index]").forEach((tr) => {
+          tr.classList.toggle(
+            "active",
+            Number(tr.dataset.index) === activeOrderIndex,
+          );
+        });
+      }
+
+      /* ===================== PAGINATION HELPERS ===================== */
+      /**
+       * Build a compact list of page numbers with ellipsis.
+       * Example: 1 … 4 5 [6] 7 8 … 20
+       */
+      function buildPageList(current, total) {
+        const pages = [];
+        const add = (n) => pages.push(n);
+
+        if (total <= 7) {
+          for (let i = 1; i <= total; i++) add(i);
+          return pages;
+        }
+
+        add(1);
+        const start = Math.max(2, current - 1);
+        const end = Math.min(total - 1, current + 1);
+
+        if (start > 2) add("…");
+        for (let i = start; i <= end; i++) add(i);
+        if (end < total - 1) add("…");
+        add(total);
+
+        return pages;
+      }
+
+      function renderPagination(totalItems, totalPages, start, end) {
+        // Info text
+        if (!totalItems) {
+          paginationInfo.textContent = "Showing 0 of 0";
+        } else {
+          paginationInfo.innerHTML = `Showing <strong>${start + 1}–${end}</strong> of <strong>${totalItems}</strong>`;
+        }
+
+        // Prev / Next
+        prevPageBtn.disabled = currentPage <= 1 || !totalItems;
+        nextPageBtn.disabled = currentPage >= totalPages || !totalItems;
+
+        // Page numbers
+        if (totalPages <= 1) {
+          pageNumbersEl.innerHTML = "";
+          return;
+        }
+
+        const pageList = buildPageList(currentPage, totalPages);
+        pageNumbersEl.innerHTML = pageList
+          .map((p) => {
+            if (p === "…") {
+              return `<span class="pageEllipsis">…</span>`;
+            }
+            return `<button class="pageNumberBtn${
+              p === currentPage ? " active" : ""
+            }" type="button" data-page="${p}">${p}</button>`;
+          })
+          .join("");
+      }
+
+      function goToPage(page) {
+        const visible = getVisibleOrders();
+        const totalPages = Math.max(1, Math.ceil(visible.length / pageSize));
+        currentPage = Math.min(Math.max(1, page), totalPages);
+        renderOrderTable();
+      }
+
+      /* ===================== RENDER ORDER TABLE ===================== */
+      function renderOrderTable() {
+        const visible = getVisibleOrders();
+        const totalItems = visible.length;
+        const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+
+        // Clamp the current page whenever the filtered list changes size
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        const start = (currentPage - 1) * pageSize;
+        const end = Math.min(start + pageSize, totalItems);
+        const pageItems = visible.slice(start, end);
+
+        orderTableBody.innerHTML = "";
+
+        if (!totalItems) {
+          const tr = document.createElement("tr");
+          tr.className = "noResultsRow";
+          tr.innerHTML = `<td colspan="7">${
+            orderData.length
+              ? `No orders match “${esc(currentTerm)}”`
+              : "No orders found."
+          }</td>`;
+          orderTableBody.appendChild(tr);
+          updateOrderCount(0);
+          renderPagination(0, 1, 0, 0);
+          return;
+        }
+
+        pageItems.forEach(({ order, index }) => {
+          const totals = calcTotals(order);
+          const tr = document.createElement("tr");
+          tr.dataset.index = index;
+          if (index === activeOrderIndex) tr.classList.add("active");
+
+          tr.innerHTML = `
+            <td class="order-id-cell" title="${esc(order.id)}">${esc(
+              order.id,
+            )}</td>
+            <td>${esc(order.cashier)}</td>
+            <td>${formatDate(order.date)}</td>
+            <td>${formatTime(order.date)}</td>
+            <td>${totals.totalQty}</td>
+            <td class="amount-cell">${money(totals.net)}</td>
+            <td>
+              <button class="view-btn" type="button" data-index="${index}">
+                View
+              </button>
+            </td>
+          `;
+
+          orderTableBody.appendChild(tr);
+        });
+
+        updateOrderCount(totalItems);
+        renderPagination(totalItems, totalPages, start, end);
+      }
+
+      /* ===================== RENDER RECEIPT ===================== */
+      function renderReceipt(order) {
+        const totals = calcTotals(order);
+
+        elOrderId.textContent = order.id;
+        elCashier.textContent = order.cashier;
+        elDate.textContent = formatDate(order.date);
+        elTime.textContent = formatTime(order.date);
+
+        elItems.innerHTML = order.products
+          .map((p) => {
+            const meta = [p.sku, p.category].filter(Boolean).join(" • ");
+            return `
+              <tr>
+                <td>
+                  <span class="item-name">${esc(p.name)}</span>
+                  ${meta ? `<span class="item-meta">${esc(meta)}</span>` : ""}
+                </td>
+                <td>${p.qty}</td>
+                <td>${Number(p.price).toLocaleString("en-US")}</td>
+                <td>${Number(p.qty * p.price).toLocaleString("en-US")}</td>
+              </tr>
+            `;
+          })
+          .join("");
+
+        elTotalQty.textContent = totals.totalQty;
+        elSubtotal.textContent = money(totals.subtotal);
+        elDiscount.textContent = money(totals.discount);
+        elTax.textContent = money(totals.tax);
+        elNet.textContent = money(totals.net);
+        elReceived.textContent = money(totals.received);
+        elChange.textContent = money(totals.change);
+      }
+
+      /* ===================== SHOW RECEIPT ===================== */
+      function showReceipt(index) {
+        const order = orderData[index];
+        if (!order) return;
+
+        renderReceipt(order);
+
+        activeOrderIndex = index;
+
+        receiptEmpty.hidden = true;
+        receiptWrapper.hidden = false;
+
+        applyActiveRow();
+
+        if (window.matchMedia("(max-width: 1180px)").matches) {
+          receiptWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+
+      /* ===================== FILTER EVENTS ===================== */
+      function applyFilter() {
+        currentTerm = searchInput.value;
+        clearSearchBtn.hidden = !currentTerm;
+        currentPage = 1; // reset to first page on new search
+        renderOrderTable();
+      }
+
+      searchInput.addEventListener("input", applyFilter);
+
+      searchInput.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && searchInput.value) {
+          event.preventDefault();
+          clearSearch();
+        }
+      });
+
+      function clearSearch() {
+        searchInput.value = "";
+        currentTerm = "";
+        clearSearchBtn.hidden = true;
+        currentPage = 1;
+        renderOrderTable();
+        searchInput.focus();
+      }
+
+      clearSearchBtn.addEventListener("click", clearSearch);
+
+      /* ===================== PAGINATION EVENTS ===================== */
+      pageSizeSelect.addEventListener("change", () => {
+        pageSize = parseInt(pageSizeSelect.value, 10) || 10;
+        currentPage = 1;
+        renderOrderTable();
+      });
+
+      prevPageBtn.addEventListener("click", () => {
+        if (currentPage > 1) goToPage(currentPage - 1);
+      });
+
+      nextPageBtn.addEventListener("click", () => {
+        goToPage(currentPage + 1);
+      });
+
+      pageNumbersEl.addEventListener("click", (e) => {
+        const btn = e.target.closest(".pageNumberBtn");
+        if (!btn) return;
+        goToPage(parseInt(btn.dataset.page, 10));
+      });
+
+      /* ===================== TABLE EVENTS ===================== */
+      orderTableBody.addEventListener("click", (event) => {
+        const btn = event.target.closest(".view-btn");
+        if (!btn) return;
+        showReceipt(Number(btn.dataset.index));
+      });
+
+      printBtn.addEventListener("click", () => {
+        window.print();
+      });
+      const btnLogout = document.getElementById("logoutBtn");
+      btnLogout.addEventListener("click", () => {
+        localStorage.removeItem("currentUser");
+        window.location.href = "/";
+      });
+      /* ===================== INIT ===================== */
+      renderOrderTable();
+      // Receipt stays hidden until the user clicks "View"
+    </script>
+  </body>
+</html>

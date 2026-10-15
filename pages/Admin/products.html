@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products — Admin</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./style/adminStyle.css" />
+    <link rel="stylesheet" href="./style/productsStyle.css" />
+  </head>
+
+  <body>
+    <div class="adminLayout">
+      <!-- ============================================================
+           SIDEBAR
+           ============================================================ -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebarBrand">
+          <div class="brandMark">TL</div>
+          <div class="brandText">
+            <span class="brandName">Tea Leaves</span>
+            <span class="brandSub">POS Admin</span>
+          </div>
+        </div>
+
+        <nav class="sidebarNav" aria-label="Main navigation">
+          <span class="navSectionLabel">Main</span>
+
+          <a href="./dashboard.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
+            </svg>
+            <span>Dashboard</span>
+          </a>
+
+          <a href="./products.html" class="navItem active">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+              />
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+              <line x1="12" y1="22.08" x2="12" y2="12" />
+            </svg>
+            <span>Products</span>
+          </a>
+
+          <a href="./categories.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
+              />
+              <line x1="7" y1="7" x2="7.01" y2="7" />
+            </svg>
+            <span>Categories</span>
+          </a>
+
+          <a href="./inventory.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+            </svg>
+            <span>Inventory</span>
+          </a>
+
+          <span class="navSectionLabel">Operations</span>
+
+          <a href="./cashierRequests.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+              />
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+              <path d="M9 14l2 2 4-4" />
+            </svg>
+            <span>Cashier Requests</span>
+            <span class="navBadge" id="navRequestsBadge">0</span>
+          </a>
+
+          <a href="./orders.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+              />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="9" y1="15" x2="15" y2="15" />
+              <line x1="9" y1="11" x2="15" y2="11" />
+            </svg>
+            <span>Orders &amp; Receipts</span>
+          </a>
+
+          <a href="./cashierManagement.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            <span>Cashier Management</span>
+          </a>
+
+          <span class="navSectionLabel">Insights</span>
+
+          <a href="./reports.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
+            <span>Reports &amp; Analytics</span>
+          </a>
+
+          <a href="./settings.html" class="navItem">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+              />
+            </svg>
+            <span>Settings</span>
+          </a>
+        </nav>
+
+        <div class="sidebarFooter">
+          <button id="logoutBtn" class="navItem navItemDanger">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            <span>Log Out</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- ============================================================
+           MAIN AREA
+           ============================================================ -->
+      <div class="adminMain">
+        <!-- ---------- TOP NAV ---------- -->
+        <header class="topbar">
+          <button
+            class="iconBtn sidebarToggle"
+            id="sidebarToggle"
+            aria-label="Toggle sidebar"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+
+          <div class="topbarTitle">
+            <h1>Products</h1>
+            <p class="breadcrumb">
+              <span>Admin</span>
+              <span class="sep">/</span>
+              <span class="current">Products</span>
+            </p>
+          </div>
+
+          <div class="topbarActions">
+            <div class="topbarSearch">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="search"
+                placeholder="Search orders, products, cashiers…"
+                aria-label="Global search"
+              />
+            </div>
+
+            <div class="dropdown" id="notifDropdown">
+              <button
+                class="iconBtn"
+                data-dropdown-toggle
+                aria-label="Notifications"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                <span class="notifBadge" id="notifBadge">0</span>
+              </button>
+
+              <div class="dropdownMenu notifMenu" data-dropdown-menu>
+                <div class="dropdownHeader">
+                  <span>Notifications</span>
+                  <span class="dropdownHeaderCount" id="notifHeaderCount"
+                    >0 new</span
+                  >
+                </div>
+                <ul class="notifList" id="notifList"></ul>
+                <div class="dropdownFooter">
+                  <a href="./cashierRequests.html">View all notifications</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="dropdown" id="profileDropdown">
+              <button class="profileBtn" data-dropdown-toggle>
+                <span class="avatar">AD</span>
+                <span class="profileMeta">
+                  <span class="profileName">Admin User</span>
+                  <span class="profileRole">Administrator</span>
+                </span>
+                <svg
+                  class="chev"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+
+              <div class="dropdownMenu profileMenu" data-dropdown-menu>
+                <div class="profileMenuHead">
+                  <span class="avatar avatarLg">AD</span>
+                  <div>
+                    <div class="profileName">Admin User</div>
+                    <div class="profileRole">admin@tealeaves.com</div>
+                  </div>
+                </div>
+                <a href="./settings.html" class="dropdownItem">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                      d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+                    />
+                  </svg>
+                  Account Settings
+                </a>
+                <a href="./settings.html#password" class="dropdownItem">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  Change Password
+                </a>
+                <div class="dropdownDivider"></div>
+                <a href="./logout.html" class="dropdownItem dropdownItemDanger">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                  Sign out
+                </a>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- ---------- MAIN CONTENT ---------- -->
+        <main class="pageContent">
+          <!-- Page header -->
+          <div class="pageHeader">
+            <div>
+              <h2>Products</h2>
+              <p class="pageDescription">
+                Manage your store products and pricing.
+              </p>
+            </div>
+            <div class="pageHeaderActions">
+              <button class="btn btnPrimary" id="addProductBtn" type="button">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Add Product
+              </button>
+            </div>
+          </div>
+
+          <!-- ---------- FILTER BAR ---------- -->
+          <div class="filterBar">
+            <div class="filterSearch">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="search"
+                id="productSearch"
+                placeholder="Search by name or SKU…"
+                autocomplete="off"
+              />
+            </div>
+
+            <select class="filterSelect" id="filterCategory">
+              <option value="">All Categories</option>
+            </select>
+
+            <select class="filterSelect" id="filterStock">
+              <option value="">All Stock Statuses</option>
+              <option value="in">In Stock</option>
+              <option value="low">Low Stock</option>
+              <option value="out">Out of Stock</option>
+            </select>
+
+            <select class="filterSelect" id="filterStatus">
+              <option value="">All Statuses</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+
+            <button class="btn btnSecondary" id="resetFiltersBtn" type="button">
+              Reset
+            </button>
+          </div>
+
+          <!-- ---------- PRODUCTS TABLE ---------- -->
+          <div class="card">
+            <div class="tableWrap">
+              <table class="dataTable">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>SKU</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="productsTableBody"></tbody>
+              </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="paginationBar" id="paginationBar">
+              <div class="paginationInfo" id="paginationInfo">
+                Showing 0 of 0
+              </div>
+              <div class="paginationControls">
+                <label class="pageSizeLabel">
+                  Show
+                  <select id="pageSizeSelect" class="pageSizeSelect">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                  </select>
+                </label>
+                <button class="pageBtn" id="prevPageBtn" type="button">
+                  ‹ Prev
+                </button>
+                <div class="pageNumbers" id="pageNumbers"></div>
+                <button class="pageBtn" id="nextPageBtn" type="button">
+                  Next ›
+                </button>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- ================= ADD / EDIT PRODUCT MODAL ================= -->
+    <div class="modalOverlay" id="productModal" aria-hidden="true">
+      <div class="modalDialog" role="dialog" aria-modal="true">
+        <div class="modalHead">
+          <h3 id="modalTitle">Add Product</h3>
+          <button
+            class="modalCloseBtn"
+            id="modalCloseBtn"
+            type="button"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+        </div>
+
+        <form id="productForm" novalidate>
+          <div class="modalBody">
+            <input type="hidden" id="productId" />
+
+            <div class="formGrid">
+              <div class="formGroup formGroupFull">
+                <label for="productName"
+                  >Product Name <span class="requiredMark">*</span></label
+                >
+                <input
+                  class="field"
+                  type="text"
+                  id="productName"
+                  required
+                  placeholder="e.g. Chicken Burger"
+                />
+                <span class="errorText" id="error-productName"></span>
+              </div>
+
+              <div class="formGroup">
+                <label for="productSku"
+                  >SKU <span class="requiredMark">*</span></label
+                >
+                <input
+                  class="field"
+                  type="text"
+                  id="productSku"
+                  required
+                  placeholder="e.g. FOD-001"
+                />
+                <span class="errorText" id="error-productSku"></span>
+              </div>
+
+              <div class="formGroup">
+                <label for="productCategory"
+                  >Category <span class="requiredMark">*</span></label
+                >
+                <input
+                  class="field"
+                  type="text"
+                  id="productCategory"
+                  required
+                  placeholder="e.g. Food"
+                  list="categoryList"
+                />
+                <datalist id="categoryList"></datalist>
+                <span class="errorText" id="error-productCategory"></span>
+              </div>
+
+              <div class="formGroup">
+                <label for="productPrice"
+                  >Selling Price (MMK)
+                  <span class="requiredMark">*</span></label
+                >
+                <input
+                  class="field"
+                  type="number"
+                  id="productPrice"
+                  required
+                  min="0"
+                  step="50"
+                  placeholder="4500"
+                />
+                <span class="errorText" id="error-productPrice"></span>
+              </div>
+
+              <div class="formGroup">
+                <label for="productStock"
+                  >Available Stock <span class="requiredMark">*</span></label
+                >
+                <input
+                  class="field"
+                  type="number"
+                  id="productStock"
+                  required
+                  min="0"
+                  step="1"
+                  placeholder="12"
+                />
+                <span class="errorText" id="error-productStock"></span>
+              </div>
+
+              <div class="formGroup">
+                <label for="productMinStock">Minimum Stock Threshold</label>
+                <input
+                  class="field"
+                  type="number"
+                  id="productMinStock"
+                  min="0"
+                  step="1"
+                  placeholder="10"
+                  value="10"
+                />
+              </div>
+
+              <div class="formGroup">
+                <label for="productStatus">Status</label>
+                <select class="field" id="productStatus">
+                  <option value="Active" selected>Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+
+              <div class="formGroup formGroupFull">
+                <label for="productImage">Image URL</label>
+                <input
+                  class="field"
+                  type="url"
+                  id="productImage"
+                  placeholder="https://…"
+                />
+              </div>
+
+              <div class="formGroup formGroupFull">
+                <label for="productDescription">Description</label>
+                <textarea
+                  class="field"
+                  id="productDescription"
+                  rows="2"
+                  placeholder="Optional description…"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="formActions">
+            <button class="btn btnSecondary" id="cancelBtn" type="button">
+              Cancel
+            </button>
+            <button class="btn btnPrimary" type="submit">Save Product</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ================= DELETE CONFIRMATION MODAL ================= -->
+    <div class="modalOverlay" id="deleteModal" aria-hidden="true">
+      <div class="modalDialog modalDialogSm" role="dialog" aria-modal="true">
+        <div class="modalHead">
+          <h3>Delete Product</h3>
+          <button
+            class="modalCloseBtn"
+            id="deleteModalClose"
+            type="button"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modalBody">
+          <p class="confirmText">
+            Are you sure you want to delete
+            <strong id="deleteProductName">this product</strong>? This action
+            cannot be undone.
+          </p>
+        </div>
+        <div class="formActions">
+          <button class="btn btnSecondary" id="cancelDeleteBtn" type="button">
+            Cancel
+          </button>
+          <button class="btn btnDanger" id="confirmDeleteBtn" type="button">
+            Delete Product
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="../Authentication/auth.js"></script>
+    <script src="./script/products.js" defer></script>
+  </body>
+</html>
