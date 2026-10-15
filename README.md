@@ -1,4 +1,4 @@
-# READ.md — Tea Leaves POS (Getting Started)
+## Tea Leaves POS (Getting Started)
 
 A Point-of-Sale (POS) web app built with **plain HTML, CSS and JavaScript only**.
 There is no backend, no build step and no npm dependencies — all data is stored in
