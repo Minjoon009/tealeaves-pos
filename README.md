@@ -93,8 +93,8 @@ management & requests).
 | Field    | Value               |
 | -------- | ------------------- |
 | Username | `John`              |
-| Email    | `thiri@example.com` |
-| Password | `Cashier@789`       |
+| Email    | `john@example.com` |
+| Password | `Cashier@123`       |
 | Role     | `cashier`           |
 
 After login you land on **`pages/Cashier/home.html`** (POS screen, order history,
