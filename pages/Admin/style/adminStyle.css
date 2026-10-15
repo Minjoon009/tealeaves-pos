@@ -124,9 +124,14 @@ h4 {
     position: sticky;
     top: 0;
     height: 100vh;
-    overflow: hidden;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
     transition: transform 0.25s ease, width 0.25s ease;
     z-index: 50;
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none; /* Chrome, Edge, Safari */
 }
 
 .sidebarBrand {
