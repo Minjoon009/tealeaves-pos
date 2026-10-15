@@ -7,8 +7,8 @@ const demoUserData = [
   },
   {
     username: "John",
-    email: "thiri@example.com",
-    password: "Cashier@789",
+    email: "john@example.com",
+    password: "Cashier@123",
     role: "cashier",
   },
 ];
